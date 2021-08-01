@@ -1,0 +1,29 @@
+---
+title: "Untitled"
+author: "Dan Ovando"
+date: "7/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{python}
+
+
+  reps = [1,2]
+  
+  print(reps)
+  
+  range(3)
+  
+for r in range(5):
+  
+  b = r  + 3
+  
+  print(r)
+  
+```
+
+

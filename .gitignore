@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 *.Rproj
+project.Rproj
+.DS_Store
+results/
+progress.txt
+*.pop
