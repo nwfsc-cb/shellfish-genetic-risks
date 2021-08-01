@@ -20,9 +20,9 @@ if (!dir.exists(newdir)){
 
 fls <- list.files(".")
 
-fls <- fls[grepl(batch,fls) & grepl(".txt",fls) | grepl("progress.txt", fls)] # get just files that match that results naming conventions.
+fls <- fls[grepl(batch,fls) & (grepl(".txt",fls) | grepl(".pop",fls)) | grepl("progress.txt", fls)] # get just files that match that results naming conventions.
 
-file.copy(fls, to = newdir)
+file.copy(fls, to = newdir, overwrite = TRUE)
 
 file.remove(fls)
 

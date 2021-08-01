@@ -23,7 +23,19 @@ simuOpt.setOptions(alleleType='long', quiet=True)
 import simuPOP as sim
     
 
-def eggs(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, post_farm_years = 50):
+def eggs(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, post_farm_years = 50,wild_N_init = 3000,rec_a = 750,sd_recruit = 0.01,
+numWildOffspring_par = 10,wild_mig_rate_L = 0.035/12, wild_mig_rate_J = 0, wild_mig_rate_A = 0,seed_batch_size = 250,
+numFarmOffspring_par = 20,
+sd_seed = 0.01,
+farm_nonB_recruit_factor = 0.25,
+gamEsc_rec = 20,
+source_idx = 0,
+local_wild_idx = 0,
+L_escape_rate = 0.07,
+J_escape_rate = 0/12,
+A_escape_rate = 0/12,
+numGameteEscapeOffspring_par = 10
+):
     '''An individual-based model of shellfish production, escape, and genetic impacts to wild populations'''
     
     reps = int(reps)
@@ -35,6 +47,30 @@ def eggs(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, 
     farm_years = int(farm_years)
     
     post_farm_years = int(post_farm_years)
+    
+     # wild popdy
+    num_wild_pops = 3 # number wild pops (model structure currently only handles 3)
+    wild_N_init = int(wild_N_init) # initial wild pop size
+    rec_a = int(rec_a) # annual recruitment event size; density independent
+    sd_recruit = 0.01 # standard deviation in wild recruitment
+    numWildOffspring_par = int(numWildOffspring_par) # wild family size
+    wild_mig_rate_L = 0.035/12 # larvae monthly mig rate, but currently only happens in one month
+    wild_mig_rate_J = 0 # juvenile
+    wild_mig_rate_A = 0 # adult
+    
+    # farm popdy
+    seed_batch_size = int(seed_batch_size) # farm recruitment, i.e., number of seed planted on farm at once
+    numFarmOffspring_par = int(numFarmOffspring_par) # farm family size
+    sd_seed = 0.01 # standard deviation in farm recruitment / scale of seed production
+    farm_nonB_recruit_factor = 0.25 # factor governing recruitment due to F2 adults on farm
+    gamEsc_rec = int(gamEsc_rec) # monthly wild recruitment due to gamete escape
+    source_idx = 0 # index of wild pop to collect broodstock from
+    local_wild_idx = 0 # index of subpop that farm will escape to 
+    # L_escape_rate = 0.07 # larvae monthly escape rate, but currently only happens in one month
+    # J_escape_rate = 0/12 # juvenile
+    # A_escape_rate = 0/12 # adult
+    numGameteEscapeOffspring_par = int(numGameteEscapeOffspring_par) # hybrid / gamete escape family size
+    
     
     progress_report = open("progress.txt", 'w')
 
@@ -813,28 +849,28 @@ def eggs(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, 
     # post_farm_years = 1 # num of years third section of the model
     
     # wild popdy
-    num_wild_pops = 3 # number wild pops (model structure currently only handles 3)
-    wild_N_init = 300 # initial wild pop size
-    rec_a = 750 # annual recruitment event size; density independent
-    sd_recruit = 0.01 # standard deviation in wild recruitment
-    numWildOffspring_par = 10 # wild family size
-    wild_mig_rate_L = 0.035/12 # larvae monthly mig rate, but currently only happens in one month
-    wild_mig_rate_J = 0 # juvenile
-    wild_mig_rate_A = 0 # adult
-    
-    # farm popdy
-    seed_batch_size = 250 # farm recruitment, i.e., number of seed planted on farm at once
-    numFarmOffspring_par = 20 # farm family size
-    sd_seed = 0.01 # standard deviation in farm recruitment / scale of seed production
-    farm_nonB_recruit_factor = 0.25 # factor governing recruitment due to F2 adults on farm
-    gamEsc_rec = 20 # monthly wild recruitment due to gamete escape
-    source_idx = 0 # index of wild pop to collect broodstock from
-    local_wild_idx = 0 # index of subpop that farm will escape to 
-    L_escape_rate = 0.07 # larvae monthly escape rate, but currently only happens in one month
-    J_escape_rate = 0/12 # juvenile
-    A_escape_rate = 0/12 # adult
-    numGameteEscapeOffspring_par = 10 # hybrid / gamete escape family size
-    
+    # num_wild_pops = 3 # number wild pops (model structure currently only handles 3)
+    # wild_N_init = 300 # initial wild pop size
+    # rec_a = 750 # annual recruitment event size; density independent
+    # sd_recruit = 0.01 # standard deviation in wild recruitment
+    # numWildOffspring_par = 10 # wild family size
+    # wild_mig_rate_L = 0.035/12 # larvae monthly mig rate, but currently only happens in one month
+    # wild_mig_rate_J = 0 # juvenile
+    # wild_mig_rate_A = 0 # adult
+    # 
+    # # farm popdy
+    # seed_batch_size = 250 # farm recruitment, i.e., number of seed planted on farm at once
+    # numFarmOffspring_par = 20 # farm family size
+    # sd_seed = 0.01 # standard deviation in farm recruitment / scale of seed production
+    # farm_nonB_recruit_factor = 0.25 # factor governing recruitment due to F2 adults on farm
+    # gamEsc_rec = 20 # monthly wild recruitment due to gamete escape
+    # source_idx = 0 # index of wild pop to collect broodstock from
+    # local_wild_idx = 0 # index of subpop that farm will escape to 
+    # L_escape_rate = 0.07 # larvae monthly escape rate, but currently only happens in one month
+    # J_escape_rate = 0/12 # juvenile
+    # A_escape_rate = 0/12 # adult
+    # numGameteEscapeOffspring_par = 10 # hybrid / gamete escape family size
+    # 
     # seasonal processes
     prob_repro_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for wild reproduction
                            'Apr':1, 'May': 0, 'Jun': 0, 
@@ -889,6 +925,24 @@ def eggs(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, 
     farm_reduced_mort = 0.1 # mortality on farm will be less than in wild by this factor
     xyrs_new_bstock = 1 # get fresh broodstock every x years
     
+    # write parameter report (testing for now - idea is users can load and run from a parameter report instead of manually)
+    
+    # F = open(batch + '_shellfish_params.pkl', 'wb') 
+    # 
+    # params = {
+    # 'prob_repro_by_month':prob_repro_by_month, 'prob_prodseed_by_month':prob_prodseed_by_month, 'prob_L_G_escape_by_month':prob_L_G_escape_by_month,
+    # 'prob_L_G_escape_by_month':prob_L_G_escape_by_month, 'prob_J_A_escape_by_month':prob_J_A_escape_by_month, 'num_aloci_stage':num_aloci_stage,
+    # 'num_nloci_ibd':num_nloci_ibd,
+    # 'num_nloci_fst':num_nloci_fst,
+    # 'good_start_AF':good_start_AF,
+    # 's': s,
+    # 'z': z
+    # }
+    # 
+    # pickle.dump(params, F) 
+    # 
+    # F.close() 
+
     # inferred parameters (based on input parameters above)
     total_years = pre_farm_years + farm_years + post_farm_years
     total_years_farm_boo = [False]*pre_farm_years + [True]*farm_years + [False]*post_farm_years

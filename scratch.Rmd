@@ -11,19 +11,40 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{python}
 
+import pickle
 
-  reps = [1,2]
-  
-  print(reps)
-  
-  range(3)
-  
-for r in range(5):
-  
-  b = r  + 3
-  
-  print(r)
-  
+ prob_J_A_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for juvenile and adult escape
+                            'Apr':0, 'May': 0, 'Jun': 0, 
+                            'Jul': 0, 'Aug':0, 'Sep':0, 
+                            'Oct':0, 'Nov':0, 'Dec':0}
+
+D = {'spam': 2, 'ham': prob_J_A_escape_by_month, 'eggs': 3} # Make a dictionary >>> D['spam'] 
+
+D['ham']
+
+F = open(batch + '_datafile.pkl', 'wb') 
+
+pickle.dump(D, F) 
+
+F.close() 
+batch = "test"
+F = open(batch + 'datafile.pkl', 'rb')
+
+E = pickle.load(F) # Load any object from file
+
+E['ham']
+
+params = {
+  'prob_repro_by_month':prob_repro_by_month, 'prob_prodseed_by_month':prob_prodseed_by_month, 'prob_L_G_escape_by_month':prob_L_G_escape_by_month,
+  'prob_L_G_escape_by_month':prob_L_G_escape_by_month, 'prob_J_A_escape_by_month':prob_J_A_escape_by_month, 'num_aloci_stage':num_aloci_stage,
+  'num_nloci_ibd':num_nloci_ibd,
+  'num_nloci_fst':num_nloci_fst,
+  'good_start_AF':good_start_AF,
+  's' = s,
+  'z' = z
+}
+
+
 ```
 
 

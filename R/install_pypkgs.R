@@ -1,4 +1,4 @@
-#' Install Required Python Libraries
+#' Install Required Python Packages
 #'
 #' @param method python install method
 #' @param conda path to the conda executable
@@ -10,7 +10,9 @@
 #' install_pylibs()
 #' }
 #'
-install_pylibs <- function(method = "auto", conda = "auto") {
+install_pypkgs <- function(method = "auto", conda = "auto") {
+
+  reticulate::use_condaenv("r-reticulate")
 
   # vector of required python packages
   pypkgs <-

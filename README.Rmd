@@ -46,13 +46,18 @@ See the example below for the workflow needed to use this package
 This example shows you the sequence of steps needed to run `shellfishrisks`. 
 
 
-```{r example, eval = FALSE}
-
+```{r example, eval = TRUE}
+set.seed(456)
 # For various reasons, if think you need to install Python libraries, you need to run this BEFORE calling library(shellfishrisks)
 
-shellfishrisks::install_pylibs()
+shellfishrisks::install_pypkgs() # installs any missing and required Python packages
 
-library(shellfishrisks) # now load shellfishrisks after installing required python libraries
+library(shellfishrisks) # now load shellfishrisks after installing required python packages
+# If you get an error about a missing Python package, restart R, and then run shellfishrisks::install_pypgks() BEFORE running library(shellfishrisks)
+
+library(ggplot2)
+
+library(dplyr)
 
 # Set options
 batch_name <- "dev"
@@ -68,14 +73,15 @@ farm_years <- 1
 
 post_farm_years <- 1
 
-# run shellfishrisk model, should take about 10 minutes with these settings
+
 eggs(
   batch = batch_name,
-  reps = as.integer(reps),
-  coreid = as.integer(coreid),
-  pre_farm_years = as.integer(pre_farm_years),
-  farm_years = as.integer(farm_years),
-  post_farm_years = as.integer(post_farm_years)
+  reps = reps,
+  coreid = coreid,
+  pre_farm_years = pre_farm_years,
+  farm_years = farm_years,
+  post_farm_years = post_farm_years,
+  wild_N_init = 100
 )
 
 clean_shellfish(batch = batch_name) # move the results to a folder of the form results/{batch}
@@ -83,6 +89,19 @@ clean_shellfish(batch = batch_name) # move the results to a folder of the form r
 results <- process_shellfish(batch = batch_name, results_dir = file.path("results",batch_name)) # read the results stored in .txt files into a list object
 
 str(results)
+
+results$AFs %>% 
+  ggplot(aes(Year, AlleleFrequency, color = Locus_index, group = Locus_index)) + 
+  geom_line() + 
+  facet_grid(Subpop ~ Allele, labeller = label_both)
+
+
+
+results$pop_pair_rvars %>% 
+  ggplot(aes(Year, Value, color = Pop_pair)) + 
+  geom_line() + 
+  facet_wrap(~ Rvar, labeller = label_both, scales = "free_y")
 ```
+
 
 
