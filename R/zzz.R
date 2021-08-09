@@ -4,6 +4,8 @@
 
   reticulate::use_condaenv("r-reticulate")
 
+  message("shellfishrisks is using Conda environment 'r-reticulate'")
+
   reticulate::source_python(system.file("spam.py", package = "shellfishrisks"), envir = .GlobalEnv)
 
 

@@ -8,3 +8,4 @@ project.Rproj
 results/
 progress.txt
 *.pop
+*.pkl

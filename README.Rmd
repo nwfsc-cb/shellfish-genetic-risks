@@ -43,11 +43,11 @@ See the example below for the workflow needed to use this package
 
 ## Example
 
-This example shows you the sequence of steps needed to run `shellfishrisks`. 
+This example shows you the sequence of steps needed to install requirede Python packages and run `shellfishrisks`. 
 
 
 ```{r example, eval = TRUE}
-set.seed(456)
+set.seed(42)
 # For various reasons, if think you need to install Python libraries, you need to run this BEFORE calling library(shellfishrisks)
 
 shellfishrisks::install_pypkgs() # installs any missing and required Python packages

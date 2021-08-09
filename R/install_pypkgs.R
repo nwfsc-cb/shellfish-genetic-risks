@@ -26,7 +26,8 @@ install_pypkgs <- function(method = "auto", conda = "auto") {
       "datetime",
       "os",
       "subprocess",
-      "simuPOP"
+      "simuPOP",
+      "pickleshare"
     )
 
 

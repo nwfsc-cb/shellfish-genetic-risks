@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 import pickle
 
+batch = "hello"
+
  prob_J_A_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for juvenile and adult escape
                             'Apr':0, 'May': 0, 'Jun': 0, 
                             'Jul': 0, 'Aug':0, 'Sep':0, 
@@ -27,22 +29,22 @@ F = open(batch + '_datafile.pkl', 'wb')
 pickle.dump(D, F) 
 
 F.close() 
-batch = "test"
-F = open(batch + 'datafile.pkl', 'rb')
+
+F = open(batch + '_datafile.pkl', 'rb')
 
 E = pickle.load(F) # Load any object from file
 
 E['ham']
 
-params = {
-  'prob_repro_by_month':prob_repro_by_month, 'prob_prodseed_by_month':prob_prodseed_by_month, 'prob_L_G_escape_by_month':prob_L_G_escape_by_month,
-  'prob_L_G_escape_by_month':prob_L_G_escape_by_month, 'prob_J_A_escape_by_month':prob_J_A_escape_by_month, 'num_aloci_stage':num_aloci_stage,
-  'num_nloci_ibd':num_nloci_ibd,
-  'num_nloci_fst':num_nloci_fst,
-  'good_start_AF':good_start_AF,
-  's' = s,
-  'z' = z
-}
+# params = {
+#   'prob_repro_by_month':prob_repro_by_month, 'prob_prodseed_by_month':prob_prodseed_by_month, 'prob_L_G_escape_by_month':prob_L_G_escape_by_month,
+#   'prob_L_G_escape_by_month':prob_L_G_escape_by_month, 'prob_J_A_escape_by_month':prob_J_A_escape_by_month, 'num_aloci_stage':num_aloci_stage,
+#   'num_nloci_ibd':num_nloci_ibd,
+#   'num_nloci_fst':num_nloci_fst,
+#   'good_start_AF':good_start_AF,
+#   's': s,
+#   'z': z
+# }
 
 
 ```
