@@ -23,7 +23,7 @@ simuOpt.setOptions(alleleType='long', quiet=True)
 import simuPOP as sim
     
 
-def eggs(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, post_farm_years = 50,wild_N_init = 3000,rec_a = 750,sd_recruit = 0.01,
+def shellfishrisk(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, post_farm_years = 50,wild_N_init = 3000,rec_a = 750,sd_recruit = 0.01,
 numWildOffspring_par = 10,wild_mig_rate_L = 0.035/12, wild_mig_rate_J = 0, wild_mig_rate_A = 0,seed_batch_size = 250,
 numFarmOffspring_par = 20,
 sd_seed = 0.01,

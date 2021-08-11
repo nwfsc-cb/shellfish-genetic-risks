@@ -1,4 +1,4 @@
-#' Process Shellfish Genetics Results
+#' Load and Serve Shellfish Genetics Results
 #'
 #' @param batch the name of the batch of results
 #' @param results_dir the name of the directory where results are stored
@@ -9,10 +9,10 @@
 #' @examples
 #' \dontrun{
 #'
-#' results <- process_shellfish(batch = "dev")
+#' results <- serve_shellfish(batch = "dev")
 #'
 #' }
-process_shellfish <- function(batch, results_dir = "."){
+serve_shellfish <- function(batch, results_dir = "."){
 
   # batch <- "dev"
 
