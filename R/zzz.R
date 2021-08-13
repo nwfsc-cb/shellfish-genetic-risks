@@ -6,7 +6,7 @@
 
   message("shellfishrisks is using Conda environment 'r-reticulate'")
 
-  reticulate::source_python(system.file("spam.py", package = "shellfishrisks"), envir = .GlobalEnv)
+  # reticulate::source_python(system.file("spam.py", package = "shellfishrisks"), envir = .GlobalEnv)
 
 
   # # global reference to scipy (will be initialized in .onLoad)

@@ -41,26 +41,48 @@ We won't kid you. Users unfamiliar with Python installation may find the process
 
 See the example below for the workflow needed to use this package
 
+### Installing Python Packages
+
+`shellfishrisks::install_pypkgs()` installs any missing and required Python packages
+ 
+Note that even if you have previously installed packages in another Python environment the first time you run this you will likely have to install packages again into the `r-reticulate` Conda environment
+
+
+For various reasons, if think you need to install Python libraries, you need to run 
+
+```r
+shellfishrisks::install_pypkgs()
+```
+BEFORE calling 
+
+```r
+library(shellfishrisks)
+```
+
+Once you have run `shellfishrisks::install_pypkgs()`, YOU MUST RESTART R COMPLETELY (e.g. exit RStudio and restart it) prior to calling
+
+```r
+library(shellfishrisks)
+```
+
+
 ## Example
 
-This example shows you the sequence of steps needed to install required Python packages and run `shellfishrisks`. 
+
+This example shows you the sequence of steps needed to run `shellfishrisks`. 
 
 
 ```{r example, eval = TRUE}
 set.seed(42)
-# For various reasons, if think you need to install Python libraries, you need to run this BEFORE calling library(shellfishrisks)
-
-shellfishrisks::install_pypkgs() # installs any missing and required Python packages
-# Note that even if you have previously installed packages in another Python environment the
-# first time you run this you will likely have to install packages again into the `r-reticulate` 
-# Conda environment
 
 library(shellfishrisks) # now load shellfishrisks after installing required python packages
-# If you get an error about a missing Python package, restart R, and then run shellfishrisks::install_pypgks() BEFORE running library(shellfishrisks)
+# If you get an error about a missing Python package, restart R completely, and then follow "Installing Python Packages" instructions
 
 library(ggplot2)
 
 library(dplyr)
+
+shellfishrisks::load_shellfish()
 
 # Set options
 batch_name <- "dev"
