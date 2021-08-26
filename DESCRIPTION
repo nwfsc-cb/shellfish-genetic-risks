@@ -8,11 +8,18 @@ Authors@R: c(
     person(c("Natalie"), "Lowell", role = "aut", email="nclowell@uw.edu"))
 Maintainer: Eric Ward <eric.ward@noaa.gov>
 Description: This package runs an agent based model in Python, exploring the genetic risks of aquaculture production on wild populations.
-License: GPL-3
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/nwfsc-cb/shellfish-genetic-risks
 BugReports: https://github.com/nwfsc-cb/shellfish-genetic-risks/issues
 RoxygenNote: 7.1.1
+Suggests: knitr,
+    rmarkdown
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
+Imports: 
+    dplyr,
+    ggplot2,
+    reticulate
+

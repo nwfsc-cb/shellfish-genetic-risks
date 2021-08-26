@@ -1,0 +1,147 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# shellfishrisks
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+
+Repo for hosting R package for shellfish genetic risk modeling
+
+This package allows for agent based modeling of shellfish genetic risk modeling. The model itself runs in Python, but users can use this package to both run and process the results in R. 
+
+## Installation
+
+To install shellfishrisks from [GitHub](https://github.com/) run
+
+``` r
+# install.packages("devtools")
+devtools::install_github("nwfsc-cb/shellfish-genetic-risks", ref="dev")
+```
+
+Note that this requires installing the `devtools` package prior to installing `shellfishrisks`
+
+
+This package also requires a working Python 3.X installation. The model is currently built assuming users have an Anaconda installation of Python. Users unfamiliar with installing Python should install Anaconda and Python 3.X following the instructions [here](https://docs.anaconda.com/anaconda/install/). If you are familiar enough with Python to have strong opinions about the type of Python installation you would like (i.e. something other than Anaconda) we shall assume you can do so without our guidance. 
+
+We won't kid you. Users unfamiliar with Python installation may find the process extremely daunting . We have tried to make this process as painless as possible. The package is designed assuming use of Anaconda. We then interface with Python through R using the `reticulate` package. By default, `reticulate` automatically creates and uses a Conda (Anaconda) environment called `r-reticulate`. The packages attempts to install any missing and required Python packages the first time the package is run, so if you have not previously installed the required Python packages you will need a working internet connection. 
+
+
+## Windows Users
+
+When installing Anaconda, be sure to 
+
+1. Select "install for all users"
+
+2. Select the option that asks if you want do add Anaconda to the system PATH (even though it suggests not to)
+
+
+See the example below for the workflow needed to use this package
+
+### Installing Python Packages
+
+`shellfishrisks::install_pypkgs()` installs any missing and required Python packages
+ 
+Note that even if you have previously installed packages in another Python environment the first time you run this you will likely have to install packages again into the `r-reticulate` Conda environment
+
+
+For various reasons, if think you need to install Python libraries, you need to run 
+
+```r
+shellfishrisks::install_pypkgs()
+```
+BEFORE calling 
+
+```r
+library(shellfishrisks)
+```
+
+Once you have run `shellfishrisks::install_pypkgs()`, YOU MUST RESTART R COMPLETELY (e.g. exit RStudio and restart it) prior to calling
+
+```r
+library(shellfishrisks)
+```
+
+
+## Example
+
+
+This example shows you the sequence of steps needed to run `shellfishrisks`. 
+
+
+```{r example, eval = FALSE}
+set.seed(42)
+
+library(shellfishrisks) # now load shellfishrisks after installing required python packages
+# If you get an error about a missing Python package, restart R completely, and then follow "Installing Python Packages" instructions
+
+library(ggplot2)
+
+library(dplyr)
+
+shellfishrisks::load_shellfish()
+
+# Set options
+batch_name <- "Batch2"
+
+reps <- 1
+
+coreid <- 1
+
+# All the _years should ideally be set to 50. However, that takes >24 hours to run. For testing, we recommend setting years to 1 to ensure the installation is working properly. 
+pre_farm_years <- 1
+
+farm_years <- 1
+
+post_farm_years <- 1
+
+# Run shellfishrisk model: this takes about 20min with these 
+# demonstration settings
+shellfishrisk(
+  batch = batch_name,
+  reps = reps,
+  coreid = coreid,
+  pre_farm_years = pre_farm_years,
+  farm_years = farm_years,
+  post_farm_years = post_farm_years,
+  wild_N_init = 100
+)
+
+clean_shellfish(batch = batch_name) # move the results to a folder of the form results/{batch}
+
+results <- serve_shellfish(batch = batch_name, results_dir = file.path("results",batch_name)) # read the results stored in .txt files into a list object
+
+
+plot_shellfish()
+
+
+str(results)
+
+results$AFs %>% 
+  ggplot(aes(Year, AlleleFrequency, color = Locus_index, group = Locus_index)) + 
+  geom_line() + 
+  facet_grid(Subpop ~ Allele, labeller = label_both)
+
+
+
+results$pop_pair_rvars %>% 
+  ggplot(aes(Year, Value, color = Pop_pair)) + 
+  geom_line() + 
+  facet_wrap(~ Rvar, labeller = label_both, scales = "free_y")
+```
+
+
+
