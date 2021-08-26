@@ -902,6 +902,8 @@ numGameteEscapeOffspring_par = 10
     make_report_all_inds = True # report ind info per month, for all inds
     make_report_adults = False # report ind info per year, only for adults
     yr_interval_log = 1 # log to write each X years
+    
+    # constant
     wild_pop_pairs = ['wild1_wild2', 'wild2_wild3', 'wild1_wild3'] # name of pop pairs
     all_pop_pairs = ['wild1_wild2', 'wild2_wild3', 'wild1_wild3', 'farm_wild1', 'farm_wild2', 'farm_wild3'] # name of pop pairs
     
