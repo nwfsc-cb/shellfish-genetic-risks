@@ -40,6 +40,9 @@ numGameteEscapeOffspring_par = 10
     
     batch_dir = os.path.join(os.getcwd(), 'results',batch)
 
+    if os.path.exists(batch_dir):
+        raise ValueError("Results with this batch name already exist. Pick a new batch name or delete folder with current batch name in results folder.")
+
     if not os.path.exists(batch_dir):
         os.makedirs(batch_dir, exist_ok=True)
 

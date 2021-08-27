@@ -4,7 +4,10 @@
 \alias{load_shellfish}
 \title{load shellfish model}
 \usage{
-load_shellfish()
+load_shellfish(condaenv = "r-reticulate")
+}
+\arguments{
+\item{condaenv}{the Conda environment used}
 }
 \value{
 

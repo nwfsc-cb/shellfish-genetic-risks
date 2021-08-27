@@ -53,6 +53,25 @@ serve_shellfish <- function(batches, results_dir = NA){
   out <- lapply(results, loader, fls = fls, tmp_results_dir = tmp_results_dir, coreid = coreid)
 
   out <- setNames(out, gsub("\\.txt","",results))
+  # browser()
+
+  # survival <- out$life_hist_report %>%
+  #   dplyr::mutate(age = floor(Age) + 1) %>%
+  #   dplyr::group_by(IndID, age) %>%
+  #   dplyr::co
+  #   dplyr::summarise(n = dplyr::n_distinct(IndID), .groups = "drop") %>%
+  #   dplyr::ungroup() %>%
+  #   dplyr::group_by(Year) %>%
+  #   dplyr::mutate(surv = lead(n, default = 0) / n) %>%
+  #   ungroup()
+  #
+  # out$life_hist_report %>%
+  #   group_by(IndID) %>%
+  #   summarise(max_age = max(Age)) %>%
+  #   ggplot(aes(max_age)) +
+  #   geom_histogram()
+  #
+  # out$survial <-
 
   tmp[[b]] <- out
 

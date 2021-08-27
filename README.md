@@ -136,24 +136,13 @@ shellfishrisk(
 )
 
 
-
 results <- serve_shellfish(batches = c("spam","eggs")) # read the results stored in .txt files into a list object
-
-
-# plot_shellfish()
-
 
 str(results)
 
-results$AFs %>% 
-  ggplot(aes(Year, AlleleFrequency, color = Locus_index, group = Locus_index)) + 
-  geom_line() + 
-  facet_grid(Subpop ~ Allele, labeller = label_both)
+plot_shellfish(results, type = "rvars")
 
+plot_shellfish(results, type = "fst")
 
-
-results$pop_pair_rvars %>% 
-  ggplot(aes(Year, Value, color = Pop_pair, linetype = batch)) + 
-  geom_line() + 
-  facet_wrap(~ Rvar, labeller = label_both, scales = "free_y")
+plot_shellfish(results, type = "popsize")
 ```
