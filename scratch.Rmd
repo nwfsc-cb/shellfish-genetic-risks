@@ -13,7 +13,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 import pickle
 
+import os
+
 batch = "hello"
+
+batch_dir = os.path.join(os.getcwd(), 'results',batch)
+logfilename = os.path.join(batch_dir,'_'.join(['batch',batch,'log.txt'])) # name log file with batch id
+
+
+if not os.path.exists(batch_dir):
+  os.makedirs(batch_dir, exist_ok = True)
 
  prob_J_A_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for juvenile and adult escape
                             'Apr':0, 'May': 0, 'Jun': 0, 
@@ -24,13 +33,13 @@ D = {'spam': 2, 'ham': prob_J_A_escape_by_month, 'eggs': 3} # Make a dictionary 
 
 D['ham']
 
-F = open(batch + '_datafile.pkl', 'wb') 
+F = open(os.path.join(batch_dir, batch + '_datafile.pkl'), 'wb') 
 
 pickle.dump(D, F) 
 
 F.close() 
 
-F = open(batch + '_datafile.pkl', 'rb')
+F = open(os.path.join(batch_dir, batch + '_datafile.pkl'), 'rb') 
 
 E = pickle.load(F) # Load any object from file
 

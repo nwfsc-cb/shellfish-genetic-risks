@@ -4,12 +4,12 @@
 \alias{serve_shellfish}
 \title{Load and Serve Shellfish Genetics Results}
 \usage{
-serve_shellfish(batch, results_dir = ".")
+serve_shellfish(batches, results_dir = NA)
 }
 \arguments{
-\item{batch}{the name of the batch of results}
-
 \item{results_dir}{the name of the directory where results are stored}
+
+\item{batch}{the name of the batch of results}
 }
 \value{
 a list containing each of the results objects

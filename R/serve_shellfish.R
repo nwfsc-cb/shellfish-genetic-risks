@@ -12,15 +12,23 @@
 #' results <- serve_shellfish(batch = "dev")
 #'
 #' }
-serve_shellfish <- function(batch, results_dir = "."){
+serve_shellfish <- function(batches, results_dir = NA){
 
   # batch <- "dev"
 
   # slowly and painfully separate out results since my regex skills are poor
 
-  fls <- list.files(results_dir)
 
-  fls <- fls[grepl(batch,fls) & grepl(".txt",fls)] # get just files that match that results naming conventions.
+  tmp <- vector(mode = "list", length = length(batches))
+  for (b in seq_along(batches)) {
+
+    if (is.na(results_dir)) {
+      tmp_results_dir <- file.path("results", batches[b])
+    }
+
+  fls <- list.files(tmp_results_dir)
+
+  fls <- fls[grepl(batches[b],fls) & grepl(".txt",fls)] # get just files that match that results naming conventions.
 
 
   results <- gsub("(.*\\d_)","", fls)
@@ -29,20 +37,33 @@ serve_shellfish <- function(batch, results_dir = "."){
 
   coreid <- unique(coreid)
 
-  loader <- function(result, fls, results_dir, coreid) {
+  loader <- function(result, fls, tmp_results_dir, coreid) {
 
-    storage <-  lapply(1:coreid, function(r) read.delim(file.path(results_dir, fls[grepl(result, fls) & grepl(r, fls)])))
+    storage <-  lapply(1:coreid, function(r) read.delim(file.path(tmp_results_dir, fls[grepl(result, fls) & grepl(r, fls)])))
 
     storage <- dplyr::bind_rows(storage, .id = "coreid")
 
     storage$coreid <- as.integer(storage$coreid)
 
+    storage$batch <- batches[b]
+
     return(storage)
 
   }
-  out <- lapply(results, loader, fls = fls, results_dir = results_dir, coreid = coreid)
+  out <- lapply(results, loader, fls = fls, tmp_results_dir = tmp_results_dir, coreid = coreid)
 
   out <- setNames(out, gsub("\\.txt","",results))
+
+  tmp[[b]] <- out
+
+  } # close batches loop
+
+  obj_names <- names(tmp[[1]])
+
+  out <- purrr::map(obj_names, ~ purrr::map_df(tmp, .x))
+
+  out <- setNames(out, gsub("\\.txt","",results))
+
 
   return(out)
 

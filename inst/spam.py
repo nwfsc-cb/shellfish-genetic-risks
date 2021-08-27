@@ -38,6 +38,11 @@ numGameteEscapeOffspring_par = 10
 ):
     '''An individual-based model of shellfish production, escape, and genetic impacts to wild populations'''
     
+    batch_dir = os.path.join(os.getcwd(), 'results',batch)
+
+    if not os.path.exists(batch_dir):
+        os.makedirs(batch_dir, exist_ok=True)
+
     reps = int(reps)
     
     coreid = int(coreid)
@@ -72,7 +77,7 @@ numGameteEscapeOffspring_par = 10
     numGameteEscapeOffspring_par = int(numGameteEscapeOffspring_par) # hybrid / gamete escape family size
     
     
-    progress_report = open("progress.txt", 'w')
+    progress_report = open(os.path.join(batch_dir,"progress.txt"), 'w')
 
     # print('Reading in parameter values')
     
@@ -774,6 +779,7 @@ numGameteEscapeOffspring_par = 10
     def write_to_log(logfilename, pop, farm_idx, farm_boo, farm_phase):
         '''Write line to log per year, with sp sizes and date, like
            wild1 wild2 wild3 farm (if applicable)'''
+           
         sp_sizes = list(pop.subPopSizes())
         sp_sizes = [str(sp_size) for sp_size in sp_sizes]
         if farm_boo == False: # if not a farm year
@@ -979,7 +985,7 @@ numGameteEscapeOffspring_par = 10
     
     progress_report.flush()
     
-    logfilename = '_'.join(['batch',batch,'log.txt']) # name log file with batch id
+    logfilename = os.path.join(batch_dir, '_'.join(['batch',batch,'log.txt'])) # name log file with batch id
     if os.path.isfile(logfilename): # if exists, remove old to prevent appending
         os.remove(logfilename)
     
@@ -988,13 +994,13 @@ numGameteEscapeOffspring_par = 10
         logfile.write('rep\tfarm_phase\tyear\twild1_size\twild2_size\twild3_size\tfarm_size\ttime_stamp\n')
     
     # open report files and write header lines
-    bstock_report = open(''.join(['batch_', batch, '_bstock_report.txt']), 'w')
+    bstock_report = open(os.path.join(batch_dir,''.join(['batch_', batch, '_bstock_report.txt'])), 'w')
     bstock_report.write('Rep\tYear\tIndID_survivedAgeX\n')
     if make_report_adults:
-        track_for_Ne = open(''.join(['batch_', batch, '_trackingForNE.txt']), 'w')
+        track_for_Ne = open(os.path.join(batch_dir,''.join(['batch_', batch, '_trackingForNE.txt'])), 'w')
         track_for_Ne.write('Rep\tYear\tSubpop\tIndID_survivedAgeX\tCohortYear\tAge\tMother_id\tFather_id\tmeanParentAge\n')
     if make_report_all_inds:
-        life_hist_report = open(''.join(['batch_', batch, '_life_hist_report.txt']), 'w')
+        life_hist_report = open(os.path.join(batch_dir,''.join(['batch_', batch, '_life_hist_report.txt'])), 'w')
         life_hist_report.write('Rep\tYear\tMonth\tSubpop\tIndID\tSex\tCohortYear\tAge\tMother_id\tFather_id\tmeanParentAge\n')
     
     # init dictionary to store rvars that occur per subpop, per year
@@ -1221,7 +1227,7 @@ numGameteEscapeOffspring_par = 10
             year_counter += 1
             
             if year == pre_farm_years-1: # in last year, save population as object to get rvar temporal fst
-                pop.save(''.join(['batch_', batch, '_t0.pop']))
+                pop.save(os.path.join(batch_dir,''.join(['batch_', batch, '_t0.pop'])))
             
         ################################################################################
         #### ---------------------- During-farm period ---------------------------- ####
@@ -1728,7 +1734,7 @@ numGameteEscapeOffspring_par = 10
         ################################################################################    
         
         # load time zero pop, rename the subpops, and combine with time one (end) pop
-        pop_t0 = sim.loadPopulation(''.join(['batch_', batch, '_t0.pop']))
+        pop_t0 = sim.loadPopulation(os.path.join(batch_dir,''.join(['batch_', batch, '_t0.pop'])))
         for name in pop_t0.subPopNames():
             # add _t0 to subpop names so distinct upon merge
             pop_t0.setSubPopName(''.join([''.join([name,'_t0'])]), pop.subPopNames().index(name)) 
@@ -1749,7 +1755,7 @@ numGameteEscapeOffspring_par = 10
     ################################################################################
     
     # for pop_rvar_dict 
-    pop_rvar_outfile = open(''.join(['batch_', batch, '_pop_rvars.txt']), 'w')
+    pop_rvar_outfile = open(os.path.join(batch_dir,''.join(['batch_', batch, '_pop_rvars.txt'])), 'w')
     pop_rvar_outfile.write('Srep\tRep\tYear\tSubpop\tRvar\tValue\n')
     for rep in pop_rvar_dict:
         for year in pop_rvar_dict[rep]:
@@ -1765,7 +1771,7 @@ numGameteEscapeOffspring_par = 10
     pop_rvar_outfile.close()
     
     # for harvest
-    harvest_outfile = open(''.join(['batch_', batch, '_harvest.txt']), 'w')
+    harvest_outfile = open(os.path.join(batch_dir,''.join(['batch_', batch, '_harvest.txt'])), 'w')
     harvest_outfile.write('Srep\tRep\tYear\tIndsHarvested\n')
     for rep in harvest_dict:
         for year in harvest_dict[rep]:
@@ -1774,7 +1780,7 @@ numGameteEscapeOffspring_par = 10
     harvest_outfile.close()
     
     if track_AFs == True:
-        afs_outfile = open(''.join(['batch_', batch, '_AFs.txt']), 'w')
+        afs_outfile = open(os.path.join(batch_dir,''.join(['batch_', batch, '_AFs.txt'])), 'w')
         afs_outfile.write('Srep\tRep\tYear\tSubpop\tLocus_index\tAllele\tAdaptive\tAdv\tAlleleFrequency\n')
         for rep in afs_dict:
             for year in afs_dict[rep]:
@@ -1811,7 +1817,7 @@ numGameteEscapeOffspring_par = 10
         afs_outfile.close()
         
     # for pop_pair_rvar_dict
-    pop_pair_rvar_outfile = open(''.join(['batch_', batch, '_pop_pair_rvars.txt']), 'w')
+    pop_pair_rvar_outfile = open(os.path.join(batch_dir,''.join(['batch_', batch, '_pop_pair_rvars.txt'])), 'w')
     pop_pair_rvar_outfile.write('Srep\tRep\tYear\tPop_pair\tRvar\tValue\n')
     for rep in pop_pair_rvar_dict:
         for year in pop_pair_rvar_dict[rep]:
@@ -1823,7 +1829,7 @@ numGameteEscapeOffspring_par = 10
     pop_pair_rvar_outfile.close()
     
     # for temporal fst (and any other temporal rvars per subpop; none yet)
-    temp_rvar_outfile = open(''.join(['batch_', batch, '_temp_rvars.txt']), 'w')
+    temp_rvar_outfile = open(os.path.join(batch_dir,''.join(['batch_', batch, '_temp_rvars.txt'])), 'w')
     temp_rvar_outfile.write('Srep\tRep\tSubpop\tRvar\tValue\n')
     for rep in temp_rvar_dict:
         for sp in temp_rvar_dict[rep]:

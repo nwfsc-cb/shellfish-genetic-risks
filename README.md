@@ -101,7 +101,6 @@ library(dplyr)
 shellfishrisks::load_shellfish()
 
 # Set options
-batch_name <- "Batch2"
 
 reps <- 1
 
@@ -117,7 +116,7 @@ post_farm_years <- 1
 # Run shellfishrisk model: this takes about 20min with these 
 # demonstration settings
 shellfishrisk(
-  batch = batch_name,
+  batch = "spam",
   reps = reps,
   coreid = coreid,
   pre_farm_years = pre_farm_years,
@@ -126,12 +125,22 @@ shellfishrisk(
   wild_N_init = 100
 )
 
-clean_shellfish(batch = batch_name) # move the results to a folder of the form results/{batch}
+shellfishrisk(
+  batch = "eggs",
+  reps = reps,
+  coreid = coreid,
+  pre_farm_years = pre_farm_years,
+  farm_years = farm_years,
+  post_farm_years = post_farm_years,
+  wild_N_init = 200
+)
 
-results <- serve_shellfish(batch = batch_name, results_dir = file.path("results",batch_name)) # read the results stored in .txt files into a list object
 
 
-plot_shellfish()
+results <- serve_shellfish(batches = c("spam","eggs")) # read the results stored in .txt files into a list object
+
+
+# plot_shellfish()
 
 
 str(results)
@@ -144,7 +153,7 @@ results$AFs %>%
 
 
 results$pop_pair_rvars %>% 
-  ggplot(aes(Year, Value, color = Pop_pair)) + 
+  ggplot(aes(Year, Value, color = Pop_pair, linetype = batch)) + 
   geom_line() + 
   facet_wrap(~ Rvar, labeller = label_both, scales = "free_y")
 ```

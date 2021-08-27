@@ -19,7 +19,7 @@ Suggests: knitr,
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 Imports: 
+    purrr,
     dplyr,
     ggplot2,
     reticulate
-
