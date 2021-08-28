@@ -12,7 +12,7 @@ Description: This package runs an agent based model in Python, exploring the gen
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/nwfsc-cb/shellfish-genetic-risks
+URL: https://nwfsc-cb.github.io/shellfish-genetic-risks/,https://github.com/nwfsc-cb/shellfish-genetic-risks
 BugReports: https://github.com/nwfsc-cb/shellfish-genetic-risks/issues
 RoxygenNote: 7.1.1
 Suggests: knitr,
