@@ -10,5 +10,4 @@ progress.txt
 *.pop
 *.pkl
 
-docs
 inst/doc
