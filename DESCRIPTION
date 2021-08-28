@@ -4,7 +4,8 @@ Version: 0.0.0.9000
 Authors@R: c(
     person(c("Eric", "J."), "Ward", email = "eric.ward@noaa.gov",
       role = c("aut", "cre"),comment = c(ORCID = "0000-0002-4359-0296")),
-    person(c("Dan"), "Ovando", role = "aut", email="danovan@uw.edu"),
+    person(c("Dan"), "Ovando", role = "aut", email="danovan@uw.edu",
+    comment = c(ORCID = "0000-0003-2120-7345")),
     person(c("Natalie"), "Lowell", role = "aut", email="nclowell@uw.edu"))
 Maintainer: Eric Ward <eric.ward@noaa.gov>
 Description: This package runs an agent based model in Python, exploring the genetic risks of aquaculture production on wild populations.

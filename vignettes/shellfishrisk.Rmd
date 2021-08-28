@@ -1,0 +1,79 @@
+---
+title: "Running multiple batches"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running multiple batches}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this example we'll see how to run two different batches and then load and compare their results. 
+
+WARNING: running this vignette will likely take a long time, like 7 hours. 
+
+```{r setup}
+set.seed(42)
+
+library(shellfishrisks) # now load shellfishrisks after installing required python packages
+# If you get an error about a missing Python package, restart R completely, and then follow "Installing Python Packages" instructions
+```
+
+
+```{r}
+
+shellfishrisks::load_shellfish()
+
+# Set options
+
+reps <- 1
+
+coreid <- 1
+
+# All the _years should ideally be set to 50. However, that takes >24 hours to run. For testing, we recommend setting years to 1 to ensure the installation is working properly. 
+pre_farm_years <- 5
+
+farm_years <- 5
+
+post_farm_years <- 5
+
+# Run shellfishrisk model: this takes about 20min with these 
+# demonstration settings
+shellfishrisk(
+  batch = "spam",
+  reps = reps,
+  coreid = coreid,
+  pre_farm_years = pre_farm_years,
+  farm_years = farm_years,
+  post_farm_years = post_farm_years,
+  wild_N_init = 100
+)
+
+shellfishrisk(
+  batch = "eggs",
+  reps = reps,
+  coreid = coreid,
+  pre_farm_years = pre_farm_years,
+  farm_years = farm_years,
+  post_farm_years = post_farm_years,
+  wild_N_init = 200
+)
+
+
+results <- serve_shellfish(batches = c("spam","eggs")) # read the results stored in .txt files into a list object
+
+str(results)
+
+plot_shellfish(results, type = "rvars")
+
+plot_shellfish(results, type = "fst")
+
+plot_shellfish(results, type = "popsize")
+
+```

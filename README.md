@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# shellfishrisks
+# shellfishrisks <img src="logo.png" align="right" width="120" />
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -94,10 +94,6 @@ set.seed(42)
 library(shellfishrisks) # now load shellfishrisks after installing required python packages
 # If you get an error about a missing Python package, restart R completely, and then follow "Installing Python Packages" instructions
 
-library(ggplot2)
-
-library(dplyr)
-
 shellfishrisks::load_shellfish()
 
 # Set options
@@ -116,7 +112,7 @@ post_farm_years <- 1
 # Run shellfishrisk model: this takes about 20min with these 
 # demonstration settings
 shellfishrisk(
-  batch = "spam",
+  batch = "demo",
   reps = reps,
   coreid = coreid,
   pre_farm_years = pre_farm_years,
@@ -125,18 +121,8 @@ shellfishrisk(
   wild_N_init = 100
 )
 
-shellfishrisk(
-  batch = "eggs",
-  reps = reps,
-  coreid = coreid,
-  pre_farm_years = pre_farm_years,
-  farm_years = farm_years,
-  post_farm_years = post_farm_years,
-  wild_N_init = 200
-)
 
-
-results <- serve_shellfish(batches = c("spam","eggs")) # read the results stored in .txt files into a list object
+results <- serve_shellfish(batches = c("demo")) # read the results stored in .txt files into a list object
 
 str(results)
 
