@@ -9,5 +9,7 @@ results/
 progress.txt
 *.pop
 *.pkl
-
+vignettes/results
 inst/doc
+vignettes/*.csv
+ctrl.csv

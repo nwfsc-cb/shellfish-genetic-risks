@@ -23,10 +23,6 @@ set.seed(42)
 
 library(shellfishrisks) # now load shellfishrisks after installing required python packages
 # If you get an error about a missing Python package, restart R completely, and then follow "Installing Python Packages" instructions
-```
-
-
-```{r}
 
 shellfishrisks::load_shellfish()
 
@@ -43,6 +39,12 @@ farm_years <- 5
 
 post_farm_years <- 5
 
+```
+
+
+```{r, eval = FALSE}
+
+
 # Run shellfishrisk model: this takes about 20min with these 
 # demonstration settings
 shellfishrisk(
@@ -52,7 +54,8 @@ shellfishrisk(
   pre_farm_years = pre_farm_years,
   farm_years = farm_years,
   post_farm_years = post_farm_years,
-  wild_N_init = 100
+  wild_N_init = 100,
+  seed_batch_size = 50
 )
 
 shellfishrisk(
@@ -62,13 +65,16 @@ shellfishrisk(
   pre_farm_years = pre_farm_years,
   farm_years = farm_years,
   post_farm_years = post_farm_years,
-  wild_N_init = 200
+  wild_N_init = 200,
+  seed_batch_size = 100,
 )
 
+```
 
+```{r}
 results <- serve_shellfish(batches = c("spam","eggs")) # read the results stored in .txt files into a list object
 
-str(results)
+results$survival
 
 plot_shellfish(results, type = "rvars")
 

@@ -1,0 +1,51 @@
+---
+title: "Running with a control file"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running with a control file}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(shellfishrisks)
+
+load_shellfish()
+
+batch <- "ctrl_demo"
+```
+
+First, we'll generate a control file with the default settings. This copies a .csv file named in this case "ctrl_file.csv" to your working directory. You could then open that file up and modify as you see fit. 
+
+```{r}
+ctrl_file_path <- generate_ctrl_file("ctrl_file")
+```
+
+We'll then run the `shellfishrisk` model using the settings in that control file. This will store the results in a folder called "results/{batch}". A copy of the control file used to create that run will be stored in "results/{batch}" as well. 
+
+```{r, eval = FALSE}
+run_shellfishrisk_ctrlfile(batch = batch, reps = 1, ctrl_file_path = ctrl_file_path)
+```
+
+And from there we can load and plot our results same as always.
+
+```{r}
+results <- serve_shellfish(batches = batch) # read the results stored in .txt files into a list object
+
+results$survival
+
+plot_shellfish(results, type = "rvars")
+
+plot_shellfish(results, type = "fst")
+
+plot_shellfish(results, type = "popsize")
+
+
+```

@@ -40,13 +40,13 @@ This package also requires a working Python 3.X installation. The model is curre
 We won't kid you. Users unfamiliar with Python installation may find the process extremely daunting . We have tried to make this process as painless as possible. The package is designed assuming use of Anaconda. We then interface with Python through R using the `reticulate` package. By default, `reticulate` automatically creates and uses a Conda (Anaconda) environment called `r-reticulate`. The packages attempts to install any missing and required Python packages the first time the package is run, so if you have not previously installed the required Python packages you will need a working internet connection. 
 
 
-## Windows Users
+<!-- ## Windows Users -->
 
-When installing Anaconda, be sure to 
+<!-- When installing Anaconda, be sure to  -->
 
-1. Select "install for all users"
+<!-- 1. Select "install for all users" -->
 
-2. Select the option that asks if you want do add Anaconda to the system PATH (even though it suggests not to)
+<!-- 2. Select the option that asks if you want do add Anaconda to the system PATH (even though it suggests not to) -->
 
 
 See the example below for the workflow needed to use this package
@@ -81,8 +81,9 @@ library(shellfishrisks)
 
 This example shows you the sequence of steps needed to run `shellfishrisks`. 
 
+See the vignettes in the "Articles" tab for other examples on running multiple batches at once, or running based on a control file. 
 
-```{r example, eval = FALSE}
+```{r example, eval = TRUE}
 set.seed(42)
 
 library(shellfishrisks) # now load shellfishrisks after installing required python packages
@@ -102,7 +103,9 @@ pre_farm_years <- 1
 farm_years <- 1
 
 post_farm_years <- 1
+```
 
+```{r, eval = FALSE}
 # Run shellfishrisk model: this takes about 20min with these 
 # demonstration settings
 shellfishrisk(
@@ -112,9 +115,15 @@ shellfishrisk(
   pre_farm_years = pre_farm_years,
   farm_years = farm_years,
   post_farm_years = post_farm_years,
-  wild_N_init = 100
+  wild_N_init = 100,
+  prob_repro_by_month = list('Jan' = 0, 'Feb' = 0, 'Mar' = 0, # for wild reproduction
+                           'Apr' = 1, 'May' = 0, 'Jun' = 0, 
+                           'Jul' = 0, 'Aug' = 0, 'Sep' = 0, 
+                           'Oct' = 0, 'Nov' = 0, 'Dec' =0)
 )
+```
 
+```{r}
 
 results <- serve_shellfish(batches = c("demo")) # read the results stored in .txt files into a list object
 

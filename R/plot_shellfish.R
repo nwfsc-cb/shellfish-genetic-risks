@@ -54,7 +54,15 @@ plot_shellfish <- function(results, type = "rvars") {
       ggplot2::ggplot(ggplot2::aes(Year, Value, color = Subpop)) +
       ggplot2::geom_vline(xintercept = farm_years, linetype = 2) +
       ggplot2::geom_point() +
-      ggplot2::geom_smooth() +
+      list(
+        if (dplyr::n_distinct(results$pop_rvars$Rep) == 1){
+
+          ggplot2::geom_line()
+
+        } else {
+          ggplot2::geom_smooth()
+        }
+      ) +
       ggplot2::facet_grid(
         Rvar ~ batch,
         switch = "y",
@@ -74,7 +82,15 @@ plot_shellfish <- function(results, type = "rvars") {
       dplyr::filter(Rvar != "Fst") %>%
       ggplot2::ggplot(ggplot2::aes(Year, Value, color = Pop_pair, fill = Pop_pair)) +
       ggplot2::geom_vline(xintercept = farm_years, linetype = 2) +
-      ggplot2::geom_smooth() +
+      list(
+        if (dplyr::n_distinct(results$pop_rvars$Rep) == 1){
+
+          ggplot2::geom_line()
+
+        } else {
+          ggplot2::geom_smooth()
+        }
+      ) +
       ggplot2::geom_point() +
       ggplot2::facet_grid(
         Rvar ~ batch,
@@ -92,7 +108,15 @@ plot_shellfish <- function(results, type = "rvars") {
       ggplot2::ggplot(ggplot2::aes(Year, Value, color = Subpop)) +
       ggplot2::geom_vline(xintercept = farm_years, linetype = 2) +
       ggplot2::geom_point() +
-      ggplot2::geom_smooth() +
+      list(
+        if (dplyr::n_distinct(results$pop_rvars$Rep) == 1){
+
+          ggplot2::geom_line()
+
+        } else {
+          ggplot2::geom_smooth()
+        }
+      ) +
       ggplot2::facet_wrap(
         ~ batch,
         scales = "free_y",

@@ -23,21 +23,74 @@ simuOpt.setOptions(alleleType='long', quiet=True)
 import simuPOP as sim
     
 
-def shellfishrisk(batch, reps, coreid, freq = None,pre_farm_years = 50, farm_years = 50, post_farm_years = 50,wild_N_init = 3000,rec_a = 750,sd_recruit = 0.01,
-numWildOffspring_par = 10,wild_mig_rate_L = 0.035/12, wild_mig_rate_J = 0, wild_mig_rate_A = 0,seed_batch_size = 250,
+def shellfishrisk(batch, 
+reps, 
+coreid, 
+freq = -999,
+pre_farm_years = 50, 
+farm_years = 50, 
+post_farm_years = 50,
+wild_N_init = 3000,
+rec_a = 750,
+sd_recruit = 0.01,
+numWildOffspring_par = 10,
+wild_mig_rate_L = 0.035/12, 
+wild_mig_rate_J = 0, 
+wild_mig_rate_A = 0,
+seed_batch_size = 250,
 numFarmOffspring_par = 20,
 sd_seed = 0.01,
-farm_nonB_recruit_factor = 0.25,
 gamEsc_rec = 20,
 source_idx = 0,
 local_wild_idx = 0,
 L_escape_rate = 0.07,
 J_escape_rate = 0/12,
 A_escape_rate = 0/12,
-numGameteEscapeOffspring_par = 10
+farm_nonB_recruit_factor = 0.25,
+numGameteEscapeOffspring_par = 10,
+prob_repro_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for wild reproduction
+                           'Apr':1, 'May': 0, 'Jun': 0, 
+                           'Jul': 0, 'Aug':0, 'Sep':0, 
+                           'Oct':0, 'Nov':0, 'Dec':0},
+prob_prodseed_by_month = {'Jan':1, 'Feb':0, 'Mar':0, # for production of seed in farm
+                              'Apr':0, 'May': 0, 'Jun': 0, 
+                              'Jul': 0, 'Aug':0, 'Sep':0, 
+                              'Oct':0, 'Nov':0, 'Dec':0},
+prob_L_G_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for larval and gamete
+                            'Apr':1, 'May': 0, 'Jun': 0, 
+                            'Jul': 0, 'Aug':0, 'Sep':0, 
+                            'Oct':0, 'Nov':0, 'Dec':0},
+    prob_J_A_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for juvenile and adult escape
+                            'Apr':0, 'May': 0, 'Jun': 0, 
+                            'Jul': 0, 'Aug':0, 'Sep':0, 
+                            'Oct':0, 'Nov':0, 'Dec':0},
+    num_aloci_stage = 5, # number of adaptive loci per stage
+    num_nloci_ibd = 10, # number of neutral loci for identity by descent
+    num_nloci_fst = 10, # number of neutral loci for fst
+    good_start_AF = 0.9, # starting allele freq for beneficial alleles
+    s = 0.05, # selection coefficient, to differentiate among wild pops
+    z = 0.5, # selection coefficient, to differentiate between farm and wild pops
+    settle_age = 1/12, # age at settlement
+    repro_age = 1, # age at maturity in years
+    ageX = 1, # age to start enumerating adults for adult report
+    max_age = 10, # max age in years
+    harvest_age = 2, # minimum harvest age in years
+    max_harvest_age = 3, # harvest all animals once they reach this age
+    harvest_rate = 1/12, # proportion of animals to harvest on farm per month
+    kill_used_bstock = False, # True: kill when collecting new, False: return bstock to wild
+    adult_annual_M = 0.3, # adult mortality rate per year
+    lar_annual_M = 0.99, #adult_annual_M*10 # larval mortality rate per year
+    juv_annual_M = 0.3, # juvenile mortality rate per year
+    var_in_mort = 0.25, # proportion above and below, e.g., fit factor will range from 1-x to 1+x
+    num_broodstock = 10, # number of broodstock to be collected at once
+    eq_sex = True, # boolean; T =  eq females & males in bstock; F = random sex ratio, at least one male & female
+    deg_add = {'L': 0, 'J': 1, 'A': 1}, # degree additive effects for alleles per stage
+    farm_reduced_mort = 0.1, # mortality on farm will be less than in wild by this factor
+    xyrs_new_bstock = 1 # get fresh broodstock every x years
+    
 ):
     '''An individual-based model of shellfish production, escape, and genetic impacts to wild populations'''
-    
+    # prepare results and process inputs
     batch_dir = os.path.join(os.getcwd(), 'results',batch)
 
     if os.path.exists(batch_dir):
@@ -56,29 +109,78 @@ numGameteEscapeOffspring_par = 10
     
     post_farm_years = int(post_farm_years)
     
-     # wild popdy
+ 
+    # wild popdy
+
     num_wild_pops = 3 # number wild pops (model structure currently only handles 3)
+
     wild_N_init = int(wild_N_init) # initial wild pop size
     rec_a = int(rec_a) # annual recruitment event size; density independent
-    sd_recruit = 0.01 # standard deviation in wild recruitment
+
     numWildOffspring_par = int(numWildOffspring_par) # wild family size
-    wild_mig_rate_L = 0.035/12 # larvae monthly mig rate, but currently only happens in one month
-    wild_mig_rate_J = 0 # juvenile
-    wild_mig_rate_A = 0 # adult
-    
+
     # farm popdy
     seed_batch_size = int(seed_batch_size) # farm recruitment, i.e., number of seed planted on farm at once
     numFarmOffspring_par = int(numFarmOffspring_par) # farm family size
-    sd_seed = 0.01 # standard deviation in farm recruitment / scale of seed production
-    farm_nonB_recruit_factor = 0.25 # factor governing recruitment due to F2 adults on farm
+
     gamEsc_rec = int(gamEsc_rec) # monthly wild recruitment due to gamete escape
-    source_idx = 0 # index of wild pop to collect broodstock from
-    local_wild_idx = 0 # index of subpop that farm will escape to 
-    # L_escape_rate = 0.07 # larvae monthly escape rate, but currently only happens in one month
-    # J_escape_rate = 0/12 # juvenile
-    # A_escape_rate = 0/12 # adult
+
+    source_idx = int(source_idx) # index of wild pop to collect broodstock from
+    local_wild_idx = int(local_wild_idx) # index of subpop that farm will escape to 
     numGameteEscapeOffspring_par = int(numGameteEscapeOffspring_par) # hybrid / gamete escape family size
     
+    
+    # seasonal processes
+    
+    for p in prob_repro_by_month.keys():
+        prob_repro_by_month[p] = int(prob_repro_by_month[p])
+    
+    for p in prob_prodseed_by_month.keys():
+        prob_prodseed_by_month[p] = int(prob_prodseed_by_month[p])
+                
+    for p in prob_L_G_escape_by_month.keys():
+        prob_L_G_escape_by_month[p] = int(prob_L_G_escape_by_month[p])
+                
+    for p in prob_J_A_escape_by_month.keys():
+        prob_J_A_escape_by_month[p] = int(prob_L_G_escape_by_month[p])
+               
+    # loci & selection
+
+    num_aloci_stage = int(num_aloci_stage) # number of adaptive loci per stage
+    num_nloci_ibd = int(num_nloci_ibd) # number of neutral loci for identity by descent
+    num_nloci_fst = int(num_nloci_fst) # number of neutral loci for fst
+    
+
+    # model reports
+    track_AFs = True # track biallelic allele freqs
+    make_report_all_inds = True # report ind info per month, for all inds
+    make_report_adults = False # report ind info per year, only for adults
+    yr_interval_log = 1 # log to write each X years
+    
+    # constant
+    wild_pop_pairs = ['wild1_wild2', 'wild2_wild3', 'wild1_wild3'] # name of pop pairs
+    all_pop_pairs = ['wild1_wild2', 'wild2_wild3', 'wild1_wild3', 'farm_wild1', 'farm_wild2', 'farm_wild3'] # name of pop pairs
+    
+    # species life history and production: olympia oysters
+
+    repro_age = int(repro_age) # age at maturity in years
+    ageX = int(ageX) # age to start enumerating adults for adult report
+    max_age = int(max_age) # max age in years
+    harvest_age = int(harvest_age) # minimum harvest age in years
+    max_harvest_age = int(max_harvest_age) # harvest all animals once they reach this age
+    
+
+    num_broodstock = int(num_broodstock) # number of broodstock to be collected at once
+
+    
+    stages = ['L', 'J', 'A'] # names for life history stages
+    
+    for p in deg_add.keys():
+        deg_add[p] = int(deg_add[p])
+               
+    
+    xyrs_new_bstock = int(xyrs_new_bstock) # get fresh broodstock every x years
+
     
     progress_report = open(os.path.join(batch_dir,"progress.txt"), 'w')
 
@@ -88,11 +190,6 @@ numGameteEscapeOffspring_par = 10
     
     progress_report.flush()
     
-
-    ################################################################################
-#### ------------------------ Import modules ------------------------------ ####
-################################################################################
-
  
     ################################################################################
     #### ----------------------- Define functions ----------------------------- ####
@@ -880,61 +977,6 @@ numGameteEscapeOffspring_par = 10
     # A_escape_rate = 0/12 # adult
     # numGameteEscapeOffspring_par = 10 # hybrid / gamete escape family size
     # 
-    # seasonal processes
-    prob_repro_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for wild reproduction
-                           'Apr':1, 'May': 0, 'Jun': 0, 
-                           'Jul': 0, 'Aug':0, 'Sep':0, 
-                           'Oct':0, 'Nov':0, 'Dec':0}
-    prob_prodseed_by_month = {'Jan':1, 'Feb':0, 'Mar':0, # for production of seed in farm
-                              'Apr':0, 'May': 0, 'Jun': 0, 
-                              'Jul': 0, 'Aug':0, 'Sep':0, 
-                              'Oct':0, 'Nov':0, 'Dec':0}
-    prob_L_G_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for larval and gamete
-                            'Apr':1, 'May': 0, 'Jun': 0, 
-                            'Jul': 0, 'Aug':0, 'Sep':0, 
-                            'Oct':0, 'Nov':0, 'Dec':0}
-    prob_J_A_escape_by_month = {'Jan':0, 'Feb':0, 'Mar':0, # for juvenile and adult escape
-                            'Apr':0, 'May': 0, 'Jun': 0, 
-                            'Jul': 0, 'Aug':0, 'Sep':0, 
-                            'Oct':0, 'Nov':0, 'Dec':0}
-    
-    # loci & selection
-    num_aloci_stage = 5 # number of adaptive loci per stage
-    num_nloci_ibd = 10 # number of neutral loci for identity by descent
-    num_nloci_fst = 10 # number of neutral loci for fst
-    good_start_AF = 0.9 # starting allele freq for beneficial alleles
-    s = 0.05 # selection coefficient, to differentiate among wild pops
-    z = 0.5 # selection coefficient, to differentiate between farm and wild pops
-    
-    # model reports
-    track_AFs = True # track biallelic allele freqs
-    make_report_all_inds = True # report ind info per month, for all inds
-    make_report_adults = False # report ind info per year, only for adults
-    yr_interval_log = 1 # log to write each X years
-    
-    # constant
-    wild_pop_pairs = ['wild1_wild2', 'wild2_wild3', 'wild1_wild3'] # name of pop pairs
-    all_pop_pairs = ['wild1_wild2', 'wild2_wild3', 'wild1_wild3', 'farm_wild1', 'farm_wild2', 'farm_wild3'] # name of pop pairs
-    
-    # species life history and production: olympia oysters
-    settle_age = 1/12 # age at settlement
-    repro_age = 1 # age at maturity in years
-    ageX = 1 # age to start enumerating adults for adult report
-    max_age = 10 # max age in years
-    harvest_age = 2 # minimum harvest age in years
-    max_harvest_age = 3 # harvest all animals once they reach this age
-    harvest_rate = 1/12 # proportion of animals to harvest on farm per month
-    kill_used_bstock = False # True: kill when collecting new, False: return bstock to wild
-    adult_annual_M = 0.3 # adult mortality rate per year
-    lar_annual_M = 0.99 #adult_annual_M*10 # larval mortality rate per year
-    juv_annual_M = 0.3 # juvenile mortality rate per year
-    var_in_mort = 0.25 # proportion above and below, e.g., fit factor will range from 1-x to 1+x
-    num_broodstock = 10 # number of broodstock to be collected at once
-    eq_sex = True # boolean; T =  eq females & males in bstock; F = random sex ratio, at least one male & female
-    stages = ['L', 'J', 'A'] # names for life history stages
-    deg_add = {'L': 0, 'J': 1, 'A': 1} # degree additive effects for alleles per stage
-    farm_reduced_mort = 0.1 # mortality on farm will be less than in wild by this factor
-    xyrs_new_bstock = 1 # get fresh broodstock every x years
     
     # write parameter report (testing for now - idea is users can load and run from a parameter report instead of manually)
     
@@ -1112,7 +1154,7 @@ numGameteEscapeOffspring_par = 10
         # assign only unique alleles so we can measure identity by descent for first set of neutral loci
         sim.initGenotype(pop, loci=loci_for_ibd, 
                          genotype=[i for i in range(2*pop.popSize()) for x in range(len(loci_for_ibd))])
-        if freq is not None: # if provided input file for starting AFs at equilibrium
+        if freq != -999: # if provided input file for starting AFs at equilibrium
             initEqAFs(loci_for_fst= loci_for_fst, eq_afs_path=freq)
         else: # else, start at 50 / 50
             sim.initGenotype(pop, loci=loci_for_fst, 
