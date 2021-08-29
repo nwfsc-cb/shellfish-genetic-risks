@@ -1,6 +1,6 @@
 Package: shellfishrisks
 Title: Package for running agent based model exploring genetic risks of aquaculture production
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person(c("Eric", "J."), "Ward", email = "eric.ward@noaa.gov",
       role = c("aut", "cre"),comment = c(ORCID = "0000-0002-4359-0296")),
