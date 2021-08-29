@@ -29,6 +29,10 @@ if not os.path.exists(batch_dir):
                             'Jul': 0, 'Aug':0, 'Sep':0, 
                             'Oct':0, 'Nov':0, 'Dec':0}
 
+for p in prob_J_A_escape_by_month.keys():
+    print(prob_J_A_escape_by_month[p])
+    prob_J_A_escape_by_month[p] = int(prob_J_A_escape_by_month[p])
+
 D = {'spam': 2, 'ham': prob_J_A_escape_by_month, 'eggs': 3} # Make a dictionary >>> D['spam'] 
 
 D['ham']

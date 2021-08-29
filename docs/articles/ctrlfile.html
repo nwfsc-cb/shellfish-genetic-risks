@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Running multiple batches • shellfishrisks</title>
+<title>Running with a control file • shellfishrisks</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Running multiple batches">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Running with a control file">
 <meta property="og:description" content="shellfishrisks">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -86,98 +86,63 @@
 
       
 
-      </header><script src="shellfishrisk_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="ctrlfile_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Running multiple batches</h1>
+      <h1 data-toc-skip>Running with a control file</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nwfsc-cb/shellfish-genetic-risks/blob/master/vignettes/shellfishrisk.Rmd"><code>vignettes/shellfishrisk.Rmd</code></a></small>
-      <div class="hidden name"><code>shellfishrisk.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/nwfsc-cb/shellfish-genetic-risks/blob/master/vignettes/ctrlfile.Rmd"><code>vignettes/ctrlfile.Rmd</code></a></small>
+      <div class="hidden name"><code>ctrlfile.Rmd</code></div>
 
     </div>
 
     
     
-<p>In this example we’ll see how to run two different batches and then load and compare their results.</p>
-<p>WARNING: running this vignette will likely take a long time, like 7 hours.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nwfsc-cb.github.io/shellfish-genetic-risks/">shellfishrisks</a></span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nwfsc-cb.github.io/shellfish-genetic-risks/">shellfishrisks</a></span><span class="op">)</span> <span class="co"># now load shellfishrisks after installing required python packages</span>
-<span class="co"># If you get an error about a missing Python package, restart R completely, and then follow "Installing Python Packages" instructions</span>
-
-<span class="fu">shellfishrisks</span><span class="fu">::</span><span class="fu"><a href="../reference/load_shellfish.html">load_shellfish</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="../reference/load_shellfish.html">load_shellfish</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; shellfishrisks is using Conda environment r-reticulate</span>
 
-<span class="co"># Set options</span>
-
-<span class="va">reps</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-
-<span class="va">coreid</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-
-<span class="co"># All the _years should ideally be set to 50. However, that takes &gt;24 hours to run. For testing, we recommend setting years to 1 to ensure the installation is working properly. </span>
-<span class="va">pre_farm_years</span> <span class="op">&lt;-</span> <span class="fl">5</span>
-
-<span class="va">farm_years</span> <span class="op">&lt;-</span> <span class="fl">5</span>
-
-<span class="va">post_farm_years</span> <span class="op">&lt;-</span> <span class="fl">5</span></code></pre></div>
+<span class="va">batch</span> <span class="op">&lt;-</span> <span class="st">"ctrl_demo"</span></code></pre></div>
+<p>First, we’ll generate a control file with the default settings. This copies a .csv file named in this case “ctrl_file.csv” to your working directory. You could then open that file up and modify as you see fit.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-
-<span class="co"># Run shellfishrisk model: this takes about 20min with these </span>
-<span class="co"># demonstration settings</span>
-<span class="fu">shellfishrisk</span><span class="op">(</span>
-  batch <span class="op">=</span> <span class="st">"spam"</span>,
-  reps <span class="op">=</span> <span class="va">reps</span>,
-  coreid <span class="op">=</span> <span class="va">coreid</span>,
-  pre_farm_years <span class="op">=</span> <span class="va">pre_farm_years</span>,
-  farm_years <span class="op">=</span> <span class="va">farm_years</span>,
-  post_farm_years <span class="op">=</span> <span class="va">post_farm_years</span>,
-  wild_N_init <span class="op">=</span> <span class="fl">100</span>,
-  seed_batch_size <span class="op">=</span> <span class="fl">50</span>
-<span class="op">)</span>
-
-<span class="fu">shellfishrisk</span><span class="op">(</span>
-  batch <span class="op">=</span> <span class="st">"eggs"</span>,
-  reps <span class="op">=</span> <span class="va">reps</span>,
-  coreid <span class="op">=</span> <span class="va">coreid</span>,
-  pre_farm_years <span class="op">=</span> <span class="va">pre_farm_years</span>,
-  farm_years <span class="op">=</span> <span class="va">farm_years</span>,
-  post_farm_years <span class="op">=</span> <span class="va">post_farm_years</span>,
-  wild_N_init <span class="op">=</span> <span class="fl">200</span>,
-  seed_batch_size <span class="op">=</span> <span class="fl">100</span>,
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">ctrl_file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_ctrl_file.html">generate_ctrl_file</a></span><span class="op">(</span><span class="st">"ctrl_file"</span><span class="op">)</span></code></pre></div>
+<p>We’ll then run the <code>shellfishrisk</code> model using the settings in that control file. This will store the results in a folder called “results/{batch}”. A copy of the control file used to create that run will be stored in “results/{batch}” as well.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/serve_shellfish.html">serve_shellfish</a></span><span class="op">(</span>batches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"spam"</span>,<span class="st">"eggs"</span><span class="op">)</span><span class="op">)</span> <span class="co"># read the results stored in .txt files into a list object</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/run_shellfishrisk_ctrlfile.html">run_shellfishrisk_ctrlfile</a></span><span class="op">(</span>batch <span class="op">=</span> <span class="va">batch</span>, reps <span class="op">=</span> <span class="fl">1</span>, ctrl_file_path <span class="op">=</span> <span class="va">ctrl_file_path</span><span class="op">)</span></code></pre></div>
+<p>And from there we can load and plot our results same as always.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/serve_shellfish.html">serve_shellfish</a></span><span class="op">(</span>batches <span class="op">=</span> <span class="va">batch</span><span class="op">)</span> <span class="co"># read the results stored in .txt files into a list object</span>
 
 <span class="va">results</span><span class="op">$</span><span class="va">survival</span>
-<span class="co">#&gt; # A tibble: 22 × 4</span>
-<span class="co">#&gt; # Groups:   batch [2]</span>
-<span class="co">#&gt;    batch   age survival survivorship</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 eggs      0   0.741        1     </span>
-<span class="co">#&gt;  2 eggs      1   0.738        0.741 </span>
-<span class="co">#&gt;  3 eggs      2   0.685        0.547 </span>
-<span class="co">#&gt;  4 eggs      3   0.727        0.375 </span>
-<span class="co">#&gt;  5 eggs      4   0.726        0.272 </span>
-<span class="co">#&gt;  6 eggs      5   0.724        0.198 </span>
-<span class="co">#&gt;  7 eggs      6   0.717        0.143 </span>
-<span class="co">#&gt;  8 eggs      7   0.713        0.103 </span>
-<span class="co">#&gt;  9 eggs      8   0.693        0.0731</span>
-<span class="co">#&gt; 10 eggs      9   0.0382       0.0507</span>
-<span class="co">#&gt; # … with 12 more rows</span>
+<span class="co">#&gt; # A tibble: 11 × 4</span>
+<span class="co">#&gt; # Groups:   batch [1]</span>
+<span class="co">#&gt;    batch       age survival survivorship</span>
+<span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 ctrl_demo     0   0.529      1       </span>
+<span class="co">#&gt;  2 ctrl_demo     1   0.410      0.529   </span>
+<span class="co">#&gt;  3 ctrl_demo     2   0.0480     0.217   </span>
+<span class="co">#&gt;  4 ctrl_demo     3   0.807      0.0104  </span>
+<span class="co">#&gt;  5 ctrl_demo     4   0.677      0.00840 </span>
+<span class="co">#&gt;  6 ctrl_demo     5   0.611      0.00568 </span>
+<span class="co">#&gt;  7 ctrl_demo     6   0.692      0.00347 </span>
+<span class="co">#&gt;  8 ctrl_demo     7   0.633      0.00240 </span>
+<span class="co">#&gt;  9 ctrl_demo     8   0.575      0.00152 </span>
+<span class="co">#&gt; 10 ctrl_demo     9   0.278      0.000875</span>
+<span class="co">#&gt; 11 ctrl_demo    10   0          0.000243</span>
 
 <span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"rvars"</span><span class="op">)</span></code></pre></div>
-<p><img src="shellfishrisk_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"fst"</span><span class="op">)</span></code></pre></div>
-<p><img src="shellfishrisk_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
+<p><img src="ctrlfile_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
+<span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"fst"</span><span class="op">)</span></code></pre></div>
+<p><img src="ctrlfile_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"popsize"</span><span class="op">)</span></code></pre></div>
-<p><img src="shellfishrisk_files/figure-html/unnamed-chunk-3-3.png" width="700"></p>
+<p><img src="ctrlfile_files/figure-html/unnamed-chunk-4-3.png" width="700"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

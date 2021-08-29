@@ -24,4 +24,6 @@ Imports:
     dplyr,
     ggplot2,
     reticulate,
-    magrittr
+    magrittr,
+    stringr,
+    tidyr

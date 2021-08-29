@@ -53,25 +53,6 @@ serve_shellfish <- function(batches, results_dir = NA){
   out <- lapply(results, loader, fls = fls, tmp_results_dir = tmp_results_dir, coreid = coreid)
 
   out <- setNames(out, gsub("\\.txt","",results))
-  # browser()
-
-  # survival <- out$life_hist_report %>%
-  #   dplyr::mutate(age = floor(Age) + 1) %>%
-  #   dplyr::group_by(IndID, age) %>%
-  #   dplyr::co
-  #   dplyr::summarise(n = dplyr::n_distinct(IndID), .groups = "drop") %>%
-  #   dplyr::ungroup() %>%
-  #   dplyr::group_by(Year) %>%
-  #   dplyr::mutate(surv = lead(n, default = 0) / n) %>%
-  #   ungroup()
-  #
-  # out$life_hist_report %>%
-  #   group_by(IndID) %>%
-  #   summarise(max_age = max(Age)) %>%
-  #   ggplot(aes(max_age)) +
-  #   geom_histogram()
-  #
-  # out$survial <-
 
   tmp[[b]] <- out
 
@@ -83,6 +64,20 @@ serve_shellfish <- function(batches, results_dir = NA){
 
   out <- setNames(out, gsub("\\.txt","",results))
 
+  # calculate survivorship table
+
+  out$survival <- out$life_hist_report %>%
+    dplyr::mutate(age = floor(Age)) %>%
+    dplyr::group_by(IndID, age, batch) %>%
+    dplyr::summarise(alive = 1, .groups = "drop") %>%
+    dplyr::group_by(IndID, batch) %>%
+    dplyr::mutate(died = alive - dplyr::lead(alive, default = 0)) %>%
+    dplyr::group_by(age,batch) %>%
+    dplyr::summarise(survival = mean(died == 0), .groups = "drop") %>%
+    dplyr::group_by(batch) %>%
+    tidyr::nest() %>%
+    dplyr::mutate(survivorship = purrr::map(data, ~ c(1,cumprod(.x$survival[1:(length(.x$survival) - 1)])))) %>%
+    tidyr::unnest(cols = c(data,survivorship))
 
   return(out)
 
