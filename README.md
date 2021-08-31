@@ -18,7 +18,7 @@ To install shellfishrisks from [GitHub](https://github.com/) run
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("nwfsc-cb/shellfish-genetic-risks", ref="dev")
+devtools::install_github("nwfsc-cb/shellfish-genetic-risks")
 ```
 
 Note that this requires installing the `devtools` package prior to
