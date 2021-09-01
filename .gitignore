@@ -13,3 +13,4 @@ vignettes/results
 inst/doc
 vignettes/*.csv
 ctrl.csv
+!inst/ctrl.csv
