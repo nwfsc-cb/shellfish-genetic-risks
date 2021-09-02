@@ -19,7 +19,7 @@ run_shellfishrisk_ctrlfile <-
 
     # ctrl_file_path <- file.path("inst", "ctrl.csv")
 
-    ctrl_file <- read.csv(ctrl_file_path)
+    ctrl_file <- readr::read_csv(ctrl_file_path,show_col_types =FALSE) # using read_csv since read.csv was reading in weird things on windows
 
     parsefoo <- function(x) {
       tmp <- ctrl_file$value[ctrl_file$variable == x]
