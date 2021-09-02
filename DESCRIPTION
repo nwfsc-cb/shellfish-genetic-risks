@@ -27,4 +27,4 @@ Imports:
     magrittr,
     stringr,
     tidyr,
-    readr
+    readr (>= 2.0.0)
