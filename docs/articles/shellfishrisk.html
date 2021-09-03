@@ -128,7 +128,7 @@
 <span class="co"># Run shellfishrisk model: this takes about 20min with these </span>
 <span class="co"># demonstration settings</span>
 <span class="fu">shellfishrisk</span><span class="op">(</span>
-  batch <span class="op">=</span> <span class="st">"spam"</span>,
+  batch <span class="op">=</span> <span class="st">"spam1"</span>,
   reps <span class="op">=</span> <span class="va">reps</span>,
   coreid <span class="op">=</span> <span class="va">coreid</span>,
   pre_farm_years <span class="op">=</span> <span class="va">pre_farm_years</span>,
@@ -139,33 +139,34 @@
 <span class="op">)</span>
 
 <span class="fu">shellfishrisk</span><span class="op">(</span>
-  batch <span class="op">=</span> <span class="st">"eggs"</span>,
+  batch <span class="op">=</span> <span class="st">"eggs2"</span>,
   reps <span class="op">=</span> <span class="va">reps</span>,
   coreid <span class="op">=</span> <span class="va">coreid</span>,
   pre_farm_years <span class="op">=</span> <span class="va">pre_farm_years</span>,
   farm_years <span class="op">=</span> <span class="va">farm_years</span>,
   post_farm_years <span class="op">=</span> <span class="va">post_farm_years</span>,
   wild_N_init <span class="op">=</span> <span class="fl">200</span>,
-  seed_batch_size <span class="op">=</span> <span class="fl">100</span>,
+  seed_batch_size <span class="op">=</span> <span class="fl">100</span>
 <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/serve_shellfish.html">serve_shellfish</a></span><span class="op">(</span>batches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"spam"</span>,<span class="st">"eggs"</span><span class="op">)</span><span class="op">)</span> <span class="co"># read the results stored in .txt files into a list object</span>
+<code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/serve_shellfish.html">serve_shellfish</a></span><span class="op">(</span>batches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"spam1"</span>,<span class="st">"eggs2"</span><span class="op">)</span>,
+                           results_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"vignettes"</span>,<span class="st">"results"</span><span class="op">)</span><span class="op">)</span> <span class="co"># read the results stored in .txt files into a list object</span>
 
 <span class="va">results</span><span class="op">$</span><span class="va">survival</span>
 <span class="co">#&gt; # A tibble: 22 × 4</span>
 <span class="co">#&gt; # Groups:   batch [2]</span>
 <span class="co">#&gt;    batch   age survival survivorship</span>
 <span class="co">#&gt;    &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 eggs      0   0.741        1     </span>
-<span class="co">#&gt;  2 eggs      1   0.738        0.741 </span>
-<span class="co">#&gt;  3 eggs      2   0.685        0.547 </span>
-<span class="co">#&gt;  4 eggs      3   0.727        0.375 </span>
-<span class="co">#&gt;  5 eggs      4   0.726        0.272 </span>
-<span class="co">#&gt;  6 eggs      5   0.724        0.198 </span>
-<span class="co">#&gt;  7 eggs      6   0.717        0.143 </span>
-<span class="co">#&gt;  8 eggs      7   0.713        0.103 </span>
-<span class="co">#&gt;  9 eggs      8   0.693        0.0731</span>
-<span class="co">#&gt; 10 eggs      9   0.0382       0.0507</span>
+<span class="co">#&gt;  1 eggs2     0   0.742        1     </span>
+<span class="co">#&gt;  2 eggs2     1   0.734        0.742 </span>
+<span class="co">#&gt;  3 eggs2     2   0.709        0.545 </span>
+<span class="co">#&gt;  4 eggs2     3   0.730        0.386 </span>
+<span class="co">#&gt;  5 eggs2     4   0.728        0.282 </span>
+<span class="co">#&gt;  6 eggs2     5   0.718        0.205 </span>
+<span class="co">#&gt;  7 eggs2     6   0.714        0.147 </span>
+<span class="co">#&gt;  8 eggs2     7   0.712        0.105 </span>
+<span class="co">#&gt;  9 eggs2     8   0.688        0.0749</span>
+<span class="co">#&gt; 10 eggs2     9   0.0276       0.0515</span>
 <span class="co">#&gt; # … with 12 more rows</span>
 
 <span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"rvars"</span><span class="op">)</span></code></pre></div>

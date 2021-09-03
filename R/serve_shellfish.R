@@ -20,22 +20,31 @@ serve_shellfish <- function(batches, results_dir = NA){
 
 
   tmp <- vector(mode = "list", length = length(batches))
+
+  if (is.na(results_dir)) {
+
+    results_dir <- "results"
+
+  }
+
   for (b in seq_along(batches)) {
 
-    if (is.na(results_dir)) {
-      tmp_results_dir <- file.path("results", batches[b])
-    }
+      tmp_results_dir <- file.path(results_dir, batches[b])
+
 
   fls <- list.files(tmp_results_dir)
 
+  if (length(fls) == 0) {
+    stop("No results found in batch folder, check back name or results folder file path")
+  }
+
   fls <- fls[grepl(batches[b],fls) & grepl(".txt",fls)] # get just files that match that results naming conventions.
 
+  tmp_fls <- gsub(paste0("batch_",batches[b],"_"),"", fls) # trim out batch stuff
 
-  results <- gsub("(.*\\d_)","", fls)
+  results <- gsub(paste0("batch_",batches[b],"_","(.*\\d_)"),"", fls) # all results files are preceeded by a underscore followed by an integer
 
-  coreid <- as.integer(gsub("\\D","", fls))
-
-  coreid <- unique(coreid)
+  coreid <- unique(as.integer(gsub("\\D","", tmp_fls)))
 
   loader <- function(result, fls, tmp_results_dir, coreid) {
 

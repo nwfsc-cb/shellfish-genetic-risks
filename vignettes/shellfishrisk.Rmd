@@ -48,7 +48,7 @@ post_farm_years <- 5
 # Run shellfishrisk model: this takes about 20min with these 
 # demonstration settings
 shellfishrisk(
-  batch = "spam",
+  batch = "spam1",
   reps = reps,
   coreid = coreid,
   pre_farm_years = pre_farm_years,
@@ -59,20 +59,21 @@ shellfishrisk(
 )
 
 shellfishrisk(
-  batch = "eggs",
+  batch = "eggs2",
   reps = reps,
   coreid = coreid,
   pre_farm_years = pre_farm_years,
   farm_years = farm_years,
   post_farm_years = post_farm_years,
   wild_N_init = 200,
-  seed_batch_size = 100,
+  seed_batch_size = 100
 )
 
 ```
 
 ```{r}
-results <- serve_shellfish(batches = c("spam","eggs")) # read the results stored in .txt files into a list object
+results <- serve_shellfish(batches = c("spam1","eggs2"),
+                           results_dir = here::here("vignettes","results")) # read the results stored in .txt files into a list object
 
 results$survival
 

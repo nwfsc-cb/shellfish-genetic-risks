@@ -19,7 +19,7 @@ library(shellfishrisks)
 
 load_shellfish()
 
-batch <- "ctrl_demo"
+batch <- "ctrl_demo_2"
 ```
 
 First, we'll generate a control file with the default settings. This copies a .csv file named in this case "ctrl_file.csv" to your working directory. You could then open that file up and modify as you see fit. 
