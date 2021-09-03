@@ -77,13 +77,13 @@ serve_shellfish <- function(batches, results_dir = NA){
 
   out$survival <- out$life_hist_report %>%
     dplyr::mutate(age = floor(Age)) %>%
-    dplyr::group_by(IndID, age, batch) %>%
+    dplyr::group_by(IndID, age, batch, coreid, Rep) %>%
     dplyr::summarise(alive = 1, .groups = "drop") %>%
-    dplyr::group_by(IndID, batch) %>%
+    dplyr::group_by(IndID, batch,coreid, Rep) %>%
     dplyr::mutate(died = alive - dplyr::lead(alive, default = 0)) %>%
-    dplyr::group_by(age,batch) %>%
+    dplyr::group_by(age,batch,coreid, Rep) %>%
     dplyr::summarise(survival = mean(died == 0), .groups = "drop") %>%
-    dplyr::group_by(batch) %>%
+    dplyr::group_by(batch,coreid, Rep) %>%
     tidyr::nest() %>%
     dplyr::mutate(survivorship = purrr::map(data, ~ c(1,cumprod(.x$survival[1:(length(.x$survival) - 1)])))) %>%
     tidyr::unnest(cols = c(data,survivorship))

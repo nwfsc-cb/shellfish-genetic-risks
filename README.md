@@ -113,9 +113,9 @@ post_farm_years <- 1
 ``` r
 # Run shellfishrisk model: this takes about 20min with these 
 # demonstration settings
-shellfishrisk(
+shellfishrisk_reps(
   batch = "demo1",
-  reps = reps,
+  reps = 10,
   coreid = coreid,
   pre_farm_years = pre_farm_years,
   farm_years = farm_years,
@@ -209,14 +209,18 @@ str(results)
 #>   ..$ Rvar  : chr [1:3] "Fst" "Fst" "Fst"
 #>   ..$ Value : num [1:3] 0.000103 0.00032 -0.000164
 #>   ..$ batch : chr [1:3] "demo1" "demo1" "demo1"
-#>  $ survival        : grouped_df [11 × 4] (S3: grouped_df/tbl_df/tbl/data.frame)
+#>  $ survival        : grouped_df [11 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)
 #>   ..$ batch       : chr [1:11] "demo1" "demo1" "demo1" "demo1" ...
+#>   ..$ coreid      : int [1:11] 1 1 1 1 1 1 1 1 1 1 ...
+#>   ..$ Rep         : int [1:11] 0 0 0 0 0 0 0 0 0 0 ...
 #>   ..$ age         : num [1:11] 0 1 2 3 4 5 6 7 8 9 ...
 #>   ..$ survival    : num [1:11] 0.5304 0.3782 0.0432 0.8119 0.6364 ...
 #>   ..$ survivorship: num [1:11] 1 0.53045 0.20059 0.00866 0.00703 ...
-#>   ..- attr(*, "groups")= tibble [1 × 2] (S3: tbl_df/tbl/data.frame)
-#>   .. ..$ batch: chr "demo1"
-#>   .. ..$ .rows: list<int> [1:1] 
+#>   ..- attr(*, "groups")= tibble [1 × 4] (S3: tbl_df/tbl/data.frame)
+#>   .. ..$ batch : chr "demo1"
+#>   .. ..$ coreid: int 1
+#>   .. ..$ Rep   : int 0
+#>   .. ..$ .rows : list<int> [1:1] 
 #>   .. .. ..$ : int [1:11] 1 2 3 4 5 6 7 8 9 10 ...
 #>   .. .. ..@ ptype: int(0) 
 #>   .. ..- attr(*, ".drop")= logi TRUE

@@ -28,4 +28,6 @@ Imports:
     stringr,
     tidyr,
     readr (>= 2.0.0),
-    here
+    here,
+    foreach,
+    doParallel
