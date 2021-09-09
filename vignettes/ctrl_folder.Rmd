@@ -1,0 +1,78 @@
+---
+title: "Running a control file folder"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running a control file folder}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The `shellfishrisks` model can be run using inputs from a control file. Users may wish to run many different control file configurations. 
+
+To facilitate this, users can use the function `shellfishrisks::run_ctrl_folder` to automatically run each of the control files located inside a specified folder, in parallel if desired. 
+
+This example walk through how to do that. 
+
+First, we will copy a default folder with two different control files into our working directory. Users can of course create these themselves. The default control file can be created using `shellfishrisks::generate_ctrl_file()`
+
+```{r setup}
+library(shellfishrisks)
+
+# copies a default batch of control files into a new folder called ctrl_files
+shellfishrisks::load_shellfish()
+
+dir.create("ctrl_files")
+
+
+  file.copy(
+      list.files(system.file("ctrl_files", package = "shellfishrisks"), full.names = TRUE),
+      to = "ctrl_files",
+      overwrite = TRUE,
+      recursive = TRUE
+    )
+
+```
+
+Now that we have a set of control files inside a folder called ctrl_files, we can run all those control files in parallel on two cores. We simply tell the function where the folder containing the control files is located, and the number of cores we wish to run the different control files on. Setting cores to 1 means each control file will be run sequentially. Setting it to more than 1 will spread the model for each control file out over the specified number of cores. SO, if there are two control files and two cores, each control file will run parallel to the other. 
+
+Note that an individual control file can still take many hours to run. YOu can determine how many cores you have available by running
+
+`parallel::detectC
+ores()`
+
+I would recommend at least at first not running more than half your available cores. 
+
+
+```{r, eval = TRUE}
+
+batches <- shellfishrisks::run_ctrl_folder(ctrl_folder = "ctrl_files", cores = 2)
+
+```
+
+From there the results are stored in the resulting batch folders. The batch names are returned by run_ctrl_folder, which we can then pass to `serve_shellfish` along with the path to the results folder
+
+```{r}
+
+batches <- gsub("\\.csv","",list.files("ctrl_files"))
+
+
+results <- serve_shellfish(batches =batches ,
+                           results_dir = "results") # read the results stored in .txt files into a list object
+
+results$survival
+
+plot_shellfish(results, type = "rvars")
+
+plot_shellfish(results, type = "fst")
+
+plot_shellfish(results, type = "popsize")
+```
+
+

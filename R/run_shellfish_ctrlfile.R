@@ -18,6 +18,12 @@ run_shellfishrisk_ctrlfile <-
     # batch <- "demo"
 
     # ctrl_file_path <- file.path("inst", "ctrl.csv")
+    
+    if (!exists("shellfishrisk")){
+      # in case running in parallel on windows
+      shellfishrisks::load_shellfish()
+      
+    }
 
     ctrl_file <- readr::read_csv(ctrl_file_path,show_col_types =FALSE) # using read_csv since read.csv was reading in weird things on windows
 

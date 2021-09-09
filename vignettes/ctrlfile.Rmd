@@ -30,7 +30,7 @@ ctrl_file_path <- generate_ctrl_file("ctrl_file")
 
 We'll then run the `shellfishrisk` model using the settings in that control file. This will store the results in a folder called "results/{batch}". A copy of the control file used to create that run will be stored in "results/{batch}" as well. 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 run_shellfishrisk_ctrlfile(batch = batch, reps = 1, ctrl_file_path = ctrl_file_path)
 ```
 

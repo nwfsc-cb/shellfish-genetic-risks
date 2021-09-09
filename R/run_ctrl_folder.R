@@ -26,15 +26,17 @@ run_ctrl_folder <- function(ctrl_folder, reps = 1, cores = 1){
 
   doParallel::registerDoParallel(cores = cores)
 
-  on.exit(doParallel::registerDoParallel(cores = 1))
+  on.exit(doParallel::stopImplicitCluster())
 
-  foreach::foreach(i = seq_along(ctrl_files)) %dopar% {
+  foreach::foreach(i = seq_along(ctrl_files),.export = "shellfishrisk") %dopar% {
 
 
-    run_shellfishrisk_ctrlfile(batch = batches[i], reps = 1, ctrl_file_path = here::here(ctrl_folder,ctrl_files[i]))
+    shellfishrisks::run_shellfishrisk_ctrlfile(batch = batches[i], reps = 1, ctrl_file_path = file.path(ctrl_folder,ctrl_files[i]))
 
 
   }
+  
+  return(batches)
 
 
 }
