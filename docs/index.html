@@ -61,6 +61,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/ctrl_folder.html">Running a control file folder</a>
+    </li>
+    <li>
       <a href="articles/ctrlfile.html">Running with a control file</a>
     </li>
     <li>
@@ -156,9 +159,9 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Run shellfishrisk model: this takes about 20min with these </span>
 <span class="co"># demonstration settings</span>
-<span class="fu">shellfishrisk</span><span class="op">(</span>
+<span class="fu">shellfishrisk_reps</span><span class="op">(</span>
   batch <span class="op">=</span> <span class="st">"demo1"</span>,
-  reps <span class="op">=</span> <span class="va">reps</span>,
+  reps <span class="op">=</span> <span class="fl">10</span>,
   coreid <span class="op">=</span> <span class="va">coreid</span>,
   pre_farm_years <span class="op">=</span> <span class="va">pre_farm_years</span>,
   farm_years <span class="op">=</span> <span class="va">farm_years</span>,
@@ -250,14 +253,18 @@
 <span class="co">#&gt;   ..$ Rvar  : chr [1:3] "Fst" "Fst" "Fst"</span>
 <span class="co">#&gt;   ..$ Value : num [1:3] 0.000103 0.00032 -0.000164</span>
 <span class="co">#&gt;   ..$ batch : chr [1:3] "demo1" "demo1" "demo1"</span>
-<span class="co">#&gt;  $ survival        : grouped_df [11 × 4] (S3: grouped_df/tbl_df/tbl/data.frame)</span>
+<span class="co">#&gt;  $ survival        : grouped_df [11 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)</span>
 <span class="co">#&gt;   ..$ batch       : chr [1:11] "demo1" "demo1" "demo1" "demo1" ...</span>
+<span class="co">#&gt;   ..$ coreid      : int [1:11] 1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="co">#&gt;   ..$ Rep         : int [1:11] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="co">#&gt;   ..$ age         : num [1:11] 0 1 2 3 4 5 6 7 8 9 ...</span>
 <span class="co">#&gt;   ..$ survival    : num [1:11] 0.5304 0.3782 0.0432 0.8119 0.6364 ...</span>
 <span class="co">#&gt;   ..$ survivorship: num [1:11] 1 0.53045 0.20059 0.00866 0.00703 ...</span>
-<span class="co">#&gt;   ..- attr(*, "groups")= tibble [1 × 2] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   .. ..$ batch: chr "demo1"</span>
-<span class="co">#&gt;   .. ..$ .rows: list&lt;int&gt; [1:1] </span>
+<span class="co">#&gt;   ..- attr(*, "groups")= tibble [1 × 4] (S3: tbl_df/tbl/data.frame)</span>
+<span class="co">#&gt;   .. ..$ batch : chr "demo1"</span>
+<span class="co">#&gt;   .. ..$ coreid: int 1</span>
+<span class="co">#&gt;   .. ..$ Rep   : int 0</span>
+<span class="co">#&gt;   .. ..$ .rows : list&lt;int&gt; [1:1] </span>
 <span class="co">#&gt;   .. .. ..$ : int [1:11] 1 2 3 4 5 6 7 8 9 10 ...</span>
 <span class="co">#&gt;   .. .. ..@ ptype: int(0) </span>
 <span class="co">#&gt;   .. ..- attr(*, ".drop")= logi TRUE</span>

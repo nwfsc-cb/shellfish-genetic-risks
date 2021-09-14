@@ -50,7 +50,7 @@ ores()`
 I would recommend at least at first not running more than half your available cores. 
 
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 
 batches <- shellfishrisks::run_ctrl_folder(ctrl_folder = "ctrl_files", cores = 2)
 

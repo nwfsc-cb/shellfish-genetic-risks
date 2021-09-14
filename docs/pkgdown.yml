@@ -2,7 +2,8 @@ pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  ctrl_folder: ctrl_folder.html
   ctrlfile: ctrlfile.html
   shellfishrisk: shellfishrisk.html
-last_built: 2021-09-03T17:26Z
+last_built: 2021-09-14T05:23Z
 

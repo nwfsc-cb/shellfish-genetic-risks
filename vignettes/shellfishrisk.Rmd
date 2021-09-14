@@ -42,7 +42,7 @@ post_farm_years <- 5
 ```
 
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 
 
 # Run shellfishrisk model: this takes about 20min with these 

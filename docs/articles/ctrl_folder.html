@@ -61,10 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/ctrlfile.html">Running with a control file</a>
+      <a href="../articles/ctrl_folder.html">Running a control file folder</a>
     </li>
     <li>
-      <a href="../articles/ctrl_folder.html">Running a control file folder</a>
+      <a href="../articles/ctrlfile.html">Running with a control file</a>
     </li>
     <li>
       <a href="../articles/shellfishrisk.html">Running multiple batches</a>
@@ -89,7 +89,7 @@
 
       
 
-      </header><script src="ctrl_folder_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><script src="ctrl_folder_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Running a control file folder</h1>
@@ -141,21 +141,21 @@
                            results_dir <span class="op">=</span> <span class="st">"results"</span><span class="op">)</span> <span class="co"># read the results stored in .txt files into a list object</span>
 
 <span class="va">results</span><span class="op">$</span><span class="va">survival</span>
-<span class="co">#&gt; # A tibble: 22 x 6</span>
+<span class="co">#&gt; # A tibble: 22 × 6</span>
 <span class="co">#&gt; # Groups:   batch, coreid, Rep [2]</span>
 <span class="co">#&gt;    batch coreid   Rep   age survival survivorship</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 ctrl1      1     0     0   0.523      1       </span>
-<span class="co">#&gt;  2 ctrl1      1     0     1   0.394      0.523   </span>
-<span class="co">#&gt;  3 ctrl1      1     0     2   0.0506     0.206   </span>
-<span class="co">#&gt;  4 ctrl1      1     0     3   0.736      0.0104  </span>
-<span class="co">#&gt;  5 ctrl1      1     0     4   0.652      0.00769 </span>
-<span class="co">#&gt;  6 ctrl1      1     0     5   0.667      0.00501 </span>
-<span class="co">#&gt;  7 ctrl1      1     0     6   0.686      0.00334 </span>
-<span class="co">#&gt;  8 ctrl1      1     0     7   0.53       0.00229 </span>
-<span class="co">#&gt;  9 ctrl1      1     0     8   0.761      0.00121 </span>
-<span class="co">#&gt; 10 ctrl1      1     0     9   0.213      0.000925</span>
-<span class="co">#&gt; # ... with 12 more rows</span>
+<span class="co">#&gt;  1 ctrl1      1     0     0   0.525      1       </span>
+<span class="co">#&gt;  2 ctrl1      1     0     1   0.394      0.525   </span>
+<span class="co">#&gt;  3 ctrl1      1     0     2   0.0450     0.207   </span>
+<span class="co">#&gt;  4 ctrl1      1     0     3   0.792      0.00931 </span>
+<span class="co">#&gt;  5 ctrl1      1     0     4   0.727      0.00737 </span>
+<span class="co">#&gt;  6 ctrl1      1     0     5   0.653      0.00536 </span>
+<span class="co">#&gt;  7 ctrl1      1     0     6   0.695      0.00350 </span>
+<span class="co">#&gt;  8 ctrl1      1     0     7   0.6        0.00243 </span>
+<span class="co">#&gt;  9 ctrl1      1     0     8   0.636      0.00146 </span>
+<span class="co">#&gt; 10 ctrl1      1     0     9   0.235      0.000929</span>
+<span class="co">#&gt; # … with 12 more rows</span>
 
 <span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"rvars"</span><span class="op">)</span></code></pre></div>
 <p><img src="ctrl_folder_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>

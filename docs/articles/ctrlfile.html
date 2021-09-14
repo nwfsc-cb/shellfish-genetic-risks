@@ -61,10 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/ctrlfile.html">Running with a control file</a>
+      <a href="../articles/ctrl_folder.html">Running a control file folder</a>
     </li>
     <li>
-      <a href="../articles/ctrl_folder.html">Running a control file folder</a>
+      <a href="../articles/ctrlfile.html">Running with a control file</a>
     </li>
     <li>
       <a href="../articles/shellfishrisk.html">Running multiple batches</a>
@@ -89,7 +89,7 @@
 
       
 
-      </header><script src="ctrlfile_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><script src="ctrlfile_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Running with a control file</h1>
@@ -120,21 +120,21 @@
 <code class="sourceCode R"><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/serve_shellfish.html">serve_shellfish</a></span><span class="op">(</span>batches <span class="op">=</span> <span class="va">batch</span><span class="op">)</span> <span class="co"># read the results stored in .txt files into a list object</span>
 
 <span class="va">results</span><span class="op">$</span><span class="va">survival</span>
-<span class="co">#&gt; # A tibble: 11 x 6</span>
+<span class="co">#&gt; # A tibble: 11 × 6</span>
 <span class="co">#&gt; # Groups:   batch, coreid, Rep [1]</span>
 <span class="co">#&gt;    batch       coreid   Rep   age survival survivorship</span>
 <span class="co">#&gt;    &lt;chr&gt;        &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 ctrl_demo_2      1     0     0   0.521      1       </span>
-<span class="co">#&gt;  2 ctrl_demo_2      1     0     1   0.397      0.521   </span>
-<span class="co">#&gt;  3 ctrl_demo_2      1     0     2   0.0483     0.207   </span>
-<span class="co">#&gt;  4 ctrl_demo_2      1     0     3   0.784      0.00999 </span>
-<span class="co">#&gt;  5 ctrl_demo_2      1     0     4   0.68       0.00783 </span>
-<span class="co">#&gt;  6 ctrl_demo_2      1     0     5   0.680      0.00533 </span>
-<span class="co">#&gt;  7 ctrl_demo_2      1     0     6   0.658      0.00362 </span>
-<span class="co">#&gt;  8 ctrl_demo_2      1     0     7   0.545      0.00238 </span>
-<span class="co">#&gt;  9 ctrl_demo_2      1     0     8   0.697      0.00130 </span>
-<span class="co">#&gt; 10 ctrl_demo_2      1     0     9   0.230      0.000906</span>
-<span class="co">#&gt; 11 ctrl_demo_2      1     0    10   0          0.000208</span>
+<span class="co">#&gt;  1 ctrl_demo_2      1     0     0   0.536      1       </span>
+<span class="co">#&gt;  2 ctrl_demo_2      1     0     1   0.393      0.536   </span>
+<span class="co">#&gt;  3 ctrl_demo_2      1     0     2   0.0429     0.211   </span>
+<span class="co">#&gt;  4 ctrl_demo_2      1     0     3   0.841      0.00903 </span>
+<span class="co">#&gt;  5 ctrl_demo_2      1     0     4   0.702      0.00759 </span>
+<span class="co">#&gt;  6 ctrl_demo_2      1     0     5   0.633      0.00533 </span>
+<span class="co">#&gt;  7 ctrl_demo_2      1     0     6   0.642      0.00338 </span>
+<span class="co">#&gt;  8 ctrl_demo_2      1     0     7   0.644      0.00217 </span>
+<span class="co">#&gt;  9 ctrl_demo_2      1     0     8   0.685      0.00140 </span>
+<span class="co">#&gt; 10 ctrl_demo_2      1     0     9   0.205      0.000957</span>
+<span class="co">#&gt; 11 ctrl_demo_2      1     0    10   0          0.000196</span>
 
 <span class="fu"><a href="../reference/plot_shellfish.html">plot_shellfish</a></span><span class="op">(</span><span class="va">results</span>, type <span class="op">=</span> <span class="st">"rvars"</span><span class="op">)</span></code></pre></div>
 <p><img src="ctrlfile_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
