@@ -125,8 +125,8 @@
     <span class="op">)</span>
 <span class="co">#&gt; [1] TRUE TRUE</span></code></pre></div>
 <p>Now that we have a set of control files inside a folder called ctrl_files, we can run all those control files in parallel on two cores. We simply tell the function where the folder containing the control files is located, and the number of cores we wish to run the different control files on. Setting cores to 1 means each control file will be run sequentially. Setting it to more than 1 will spread the model for each control file out over the specified number of cores. SO, if there are two control files and two cores, each control file will run parallel to the other.</p>
-<p>Note that an individual control file can still take many hours to run. YOu can determine how many cores you have available by running</p>
-<p><code>parallel::detectC ores()</code></p>
+<p>Note that an individual control file can still take many hours to run. You can determine how many cores you have available by running</p>
+<p><code><a href="https://rdrr.io/r/parallel/detectCores.html">parallel::detectCores()</a></code></p>
 <p>I would recommend at least at first not running more than half your available cores.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
